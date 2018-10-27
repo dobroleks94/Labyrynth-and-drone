@@ -26,13 +26,13 @@ public class Labyrinth {
         sectors[indexX][indexY]=s;
     }
 
+    public Sector[][] getSector(){
+        return sectors;
+    }
+
     public void addRandomSector(int indexX,int indexY){
         Random random=new Random();
-        boolean left=random.nextBoolean();
-        boolean right=random.nextBoolean();
-        boolean up=random.nextBoolean();
-        boolean down=random.nextBoolean();
-        sectors[indexX][indexY]=new Sector(left,right,up,down);
+        sectors[indexX][indexY]=new Sector(random.nextBoolean(),random.nextBoolean(),random.nextBoolean(),random.nextBoolean());
     }
 
     public void fillLab(){
