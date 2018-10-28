@@ -1,18 +1,9 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
-import java.awt.*;
-import java.util.LinkedList;
 
 public class Main extends Application {
 
@@ -21,7 +12,8 @@ public class Main extends Application {
         AnchorPane root = new AnchorPane();
         final Scene scene = new Scene(root, 1024, 768);
         scene.setFill(null);
-        Labyrinth lab = new Labyrinth(10, 10);
+        Labyrinth lab = new Labyrinth(15, 15);
+        System.out.println(lab);
         Drawing.drawLabyrinth(root, lab);
         primaryStage.setTitle("");
         primaryStage.setScene(scene);
