@@ -1,12 +1,12 @@
 package sample.model;
 
 public class Sector {
-    private  boolean left;
+    private  boolean left;//Наличие стенок с определенной стороны
     private  boolean right;
     private  boolean up;
     private  boolean down;
-    private static int numver=0;
-    private int number;
+    private static int numver=0; //Only for debug
+    private int number; //Only for debug
 
     public Sector(boolean left, boolean right, boolean up, boolean down) {
         this.left = left;

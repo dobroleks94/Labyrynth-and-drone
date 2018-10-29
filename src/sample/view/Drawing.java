@@ -10,7 +10,7 @@ import sample.model.Sector;
 public class Drawing {
     static int otstup = 30;
     static int length = otstup * 2;
-    public static void drawLabyrinth(AnchorPane root, Labyrinth lab) {
+    public static void drawLabyrinth(AnchorPane root, Labyrinth lab) { //Отображение всех секторов лабиринта
         Sector[][] sectors = lab.getSectors();
 
 
@@ -46,11 +46,11 @@ public class Drawing {
     }
 
     private static Line setLine(int x1,int y1,int x2,int y2,int x,int y){
-        return new Line(x*otstup+x1,y*otstup+y1,x*otstup+x2,y*otstup+y2);
+        return new Line(x*otstup+x1,y*otstup+y1,x*otstup+x2,y*otstup+y2);//Установка линии по заданым координатам
     }
 
-    private static void drawStart(AnchorPane root,Labyrinth lab){
-        Line start; //ВЫДЕЛЕНИЕ СТАРТА
+    private static void drawStart(AnchorPane root,Labyrinth lab){ //ВЫДЕЛЕНИЕ СТАРТА
+        Line start;
         if (lab.getStartX() == 0)
             start = setLine(otstup,otstup,otstup,length,lab.getStartX(),lab.getStartY()); //ЛЕВАЯ СТЕНКА
         else if (lab.getStartX() == lab.getSizeX() - 1)
@@ -65,8 +65,8 @@ public class Drawing {
         root.getChildren().add(start);
     }
 
-    private static void drawFin(AnchorPane root,Labyrinth lab){
-        Line fin; //ВЫДЕЛЕНИЕ ФИНИША
+    private static void drawFin(AnchorPane root,Labyrinth lab){ //ВЫДЕЛЕНИЕ ФИНИША
+        Line fin;
         if (lab.getFinX() == 0)
             fin = setLine(otstup,otstup,otstup,length,lab.getFinX(),lab.getFinY()); //ЛЕВАЯ СТЕНКА
         else if (lab.getFinX() == lab.getSizeX() - 1)

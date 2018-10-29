@@ -3,12 +3,12 @@ package sample.model;
 import java.util.Random;
 
 public class LabCreator {
-    public static void addRandomSector(int indexY, int indexX,Labyrinth lab) {
+    public static void addRandomSector(int indexY, int indexX,Labyrinth lab) { //Сектор с рандомными значениями стен
         Random random = new Random();
         lab.addSector(new Sector(random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean()),indexX,indexY);
     }
 
-    public static void fillLab(Labyrinth lab) {
+    public static void fillLab(Labyrinth lab) { //Заполнение лабиринта секторами
         for (int i = 0; i < lab.getSizeY(); i++) {
             for (int j = 0; j < lab.getSizeX(); j++) {
                 if (lab.getSector(i,j) == null)
@@ -17,7 +17,7 @@ public class LabCreator {
         }
     }
 
-    public static void fillRoad(Labyrinth lab) {
+    public static void fillRoad(Labyrinth lab) { // "Прокладывание дороги" в лабиринте
         lab.setSectors( new Sector[lab.getSizeY()][lab.getSizeX()]);
         Random random = new Random();
         if(random.nextBoolean()){
@@ -104,7 +104,7 @@ public class LabCreator {
                     }
                     break;
             }
-            if(countAll>lab.getSizeX()*lab.getSizeY()/2) {
+            if(countAll>lab.getSizeX()*lab.getSizeY()/2) { //Предостережение зацикливания
                 fillRoad(lab);
                 return;
             }

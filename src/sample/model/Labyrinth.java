@@ -1,11 +1,11 @@
 package sample.model;
 
 public class Labyrinth {
-    private final int sizeX;
+    private final int sizeX; //Размеры поля
     private final int sizeY;
-    private int startX;
+    private int startX;//Положение начальной точки
     private int startY;
-    private int finX;
+    private int finX;//Положение конечной точки
     private int finY;
     private Sector[][] sectors;
 
@@ -73,7 +73,7 @@ public class Labyrinth {
     }
 
     @Override
-    public String toString() {
+    public String toString() {              //Only for debug
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < sectors.length; i++) {
             for (int j = 0; j < sectors[i].length; j++) {
