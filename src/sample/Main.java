@@ -12,7 +12,7 @@ public class Main extends Application {
         AnchorPane root = new AnchorPane();
         final Scene scene = new Scene(root, 1024, 768);
         scene.setFill(null);
-        Labyrinth lab = new Labyrinth(15, 15);
+        Labyrinth lab = new Labyrinth(25, 25);
         System.out.println(lab);
         Drawing.drawLabyrinth(root, lab);
         primaryStage.setTitle("");

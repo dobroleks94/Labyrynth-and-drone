@@ -6,6 +6,7 @@ public class Labyrinth {
     private final int sizeX;
     private final int sizeY;
     private int startX;
+    private int startY;
     private int finX;
     private int finY;
     private Sector[][] sectors;
@@ -13,9 +14,16 @@ public class Labyrinth {
     public Labyrinth(int sizeX, int sizeY) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
-        sectors = new Sector[sizeX][sizeY];
         fillRoad();
         fillLab();
+    }
+
+    public int getStartY() {
+        return startY;
+    }
+
+    public void setStartY(int startY) {
+        this.startY = startY;
     }
 
     public int getStartX() {
@@ -73,13 +81,30 @@ public class Labyrinth {
     }
 
     private void fillRoad() {
+        sectors = new Sector[sizeY][sizeX];
         Random random = new Random();
-        startX = random.nextInt(sizeX);
+        if(random.nextBoolean()){
+            startX = random.nextInt(sizeX);
+            if(random.nextBoolean())
+                startY=0;
+            else
+                startY=sizeY-1;
+        }
+        else {
+            startY = random.nextInt(sizeY);
+            if(random.nextBoolean())
+                startX=0;
+            else
+                startX=sizeX-1;
+        }
+
         int x = startX;
-        int y = sizeY - 1;
+        int y = startY;
         int count = 0;
+        int countAll=0;
         sectors[y][x] = new Sector(false, false, false, false);
         while (true) {
+            countAll++;
             switch (random.nextInt(4)) {
                 case 0:
                     if (x - 1 >= 0) {
@@ -141,6 +166,10 @@ public class Labyrinth {
                         }
                     }
                     break;
+            }
+            if(countAll>sizeX*sizeY/2) {
+                fillRoad();
+                return;
             }
         }
     }

@@ -43,19 +43,31 @@ public class Drawing {
         }
 
 
-        Line start = new Line(lab.getStartX() * otstup + otstup, (lab.getSizeY() - 1) * otstup + length, lab.getStartX() * otstup + length, (lab.getSizeY() - 1) * otstup + length);
-        start.setStroke(Color.RED);
+
 
         Line fin;
         if (lab.getFinX() == 0)
             fin = new Line(lab.getFinX() * otstup + otstup, lab.getFinY() * otstup + otstup, lab.getFinX() * otstup + otstup, lab.getFinY() * otstup + length); //ЛЕВАЯ СТЕНКА
         else if (lab.getFinX() == lab.getSizeX() - 1)
-            fin = new Line(lab.getFinX() * otstup + length, lab.getFinY() * otstup + otstup, lab.getFinX() * otstup + length, lab.getFinY() * otstup + length);
+            fin = new Line(lab.getFinX() * otstup + length, lab.getFinY() * otstup + otstup, lab.getFinX() * otstup + length, lab.getFinY() * otstup + length); //ПРАВАЯ СТЕНКА
         else if (lab.getFinY() == 0)
-            fin = new Line(lab.getFinX() * otstup + otstup, lab.getFinY() * otstup + otstup, lab.getFinX() * otstup + length, lab.getFinY() * otstup + otstup);
+            fin = new Line(lab.getFinX() * otstup + otstup, lab.getFinY() * otstup + otstup, lab.getFinX() * otstup + length, lab.getFinY() * otstup + otstup); //ВЕРХНЯЯ СТЕНКА
         else
-            fin = new Line(lab.getFinX() * otstup + otstup, lab.getFinY() * otstup + length, lab.getFinX() * otstup + length, lab.getFinY() * otstup + length);
+            fin = new Line(lab.getFinX() * otstup + otstup, lab.getFinY() * otstup + length, lab.getFinX() * otstup + length, lab.getFinY() * otstup + length);//НИЖНЯЯ СТЕНКА
         fin.setStroke(Color.WHITE);
+
+        Line start;
+        if (lab.getStartX() == 0)
+            start = new Line(lab.getStartX() * otstup + otstup, lab.getStartY() * otstup + otstup, lab.getStartX() * otstup + otstup, lab.getStartY() * otstup + length); //ЛЕВАЯ СТЕНКА
+        else if (lab.getStartX() == lab.getSizeX() - 1)
+            start = new Line(lab.getStartX() * otstup + length, lab.getStartY() * otstup + otstup, lab.getStartX() * otstup + length, lab.getStartY() * otstup + length); //ПРАВАЯ СТЕНКА
+        else if (lab.getStartY() == 0)
+            start = new Line(lab.getStartX() * otstup + otstup, lab.getStartY() * otstup + otstup, lab.getStartX() * otstup + length, lab.getStartY() * otstup + otstup);  //ВЕРХНЯЯ СТЕНКА
+        else
+            start = new Line(lab.getStartX() * otstup + otstup, lab.getStartY() * otstup + length, lab.getStartX() * otstup + length, lab.getStartY() * otstup + length);  //НИЖНЯЯ СТЕНКА
+        start.setStroke(Color.YELLOW);
+
+
         root.getChildren().addAll(start,fin);
     }
 }
