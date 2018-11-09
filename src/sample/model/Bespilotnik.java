@@ -14,7 +14,7 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
         setFill(Color.BLACK);
     }
 
-    private BespilotnikBehaviour  behave;
+    private BespilotnikBehaviour behave;
 
     public void checkBehaviour() {
         if (behave == null) {
