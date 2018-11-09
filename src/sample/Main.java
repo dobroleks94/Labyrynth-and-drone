@@ -29,7 +29,7 @@ public class Main extends Application {
         primaryStage.setTitle("");
         primaryStage.setScene(scene);
         primaryStage.show();*/
-        Bespilotnik bespilotnik = new Bespilotnik(10, 250, 10, 10);
+        Bespilotnik  bespilotnik = new Bespilotnik(10, 250, 10, 10);
         Group group = new Group(bespilotnik);
         Scene scene = new Scene(group, 500, 500);
         scene.setOnKeyPressed(bespilotnik);
