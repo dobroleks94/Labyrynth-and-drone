@@ -21,20 +21,17 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
-        primaryStage.setTitle("Course work");
-
-        AnchorPane root = new AnchorPane();
-        Scene scene = new Scene(root, 1024, 768);
+        /*AnchorPane root = new AnchorPane();
+        final Scene scene = new Scene(root, 1024, 768);
         scene.setFill(null);
-
         Labyrinth lab = new Labyrinth(10, 10);
         Drawing.drawLabyrinth(root, lab);
-
-
-        Bespilotnik  bespilotnik = new Bespilotnik(lab.getStartX(), lab.getStartY(), 10, 10);
-        root.getChildren().add(bespilotnik);
-
+        primaryStage.setTitle("");
+        primaryStage.setScene(scene);
+        primaryStage.show();*/
+        Bespilotnik  bespilotnik = new Bespilotnik(10, 250, 10, 10);
+        Group group = new Group(bespilotnik);
+        Scene scene = new Scene(group, 500, 500);
         scene.setOnKeyPressed(bespilotnik);
         primaryStage.setScene(scene);
         primaryStage.show();
