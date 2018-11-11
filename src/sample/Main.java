@@ -25,7 +25,7 @@ public class Main extends Application {
         primaryStage.setTitle("Course work");
 
         AnchorPane root = new AnchorPane();
-        final Scene scene = new Scene(root, 1024, 768);
+        Scene scene = new Scene(root, 1024, 768);
         scene.setFill(null);
 
         Labyrinth lab = new Labyrinth(10, 10);
