@@ -26,20 +26,23 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
 
     @Override
     public void handle(KeyEvent event) {
-        checkBehaviour();
-        switch (event.getCode()) {
-            case UP:
-                behave.moveToSide(Side.TOP);
-                break;
-            case DOWN:
-                behave.moveToSide(Side.BOTTOM);
-                break;
-            case LEFT:
-                behave.moveToSide(Side.LEFT);
-                break;
-            case RIGHT:
-                behave.moveToSide(Side.RIGHT);
-                break;
+        synchronized (this) {
+            checkBehaviour();
+            switch (event.getCode()) {
+                case UP:
+                    behave.moveToSide(Side.TOP);
+                    break;
+                case DOWN:
+                    behave.moveToSide(Side.BOTTOM);
+                    break;
+                case LEFT:
+                    behave.moveToSide(Side.LEFT);
+                    break;
+                case RIGHT:
+                    behave.moveToSide(Side.RIGHT);
+                    break;
+            }
+            notify();
         }
     }
 
