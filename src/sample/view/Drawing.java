@@ -62,6 +62,12 @@ public class Drawing {
         start.setStroke(Color.BLUE);
         start.setStrokeWidth(4);
 
+        /**
+         * start line`s coordinates
+         */
+        lab.setStartX((int) start.getStartX());
+        lab.setStartY((int) start.getStartY());
+
         root.getChildren().add(start);
     }
 

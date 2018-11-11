@@ -16,6 +16,23 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
 
     private BespilotnikBehaviour behave;
 
+
+    /**
+     * sets the centre of start line
+     * where our bespilotnik will be located
+     */
+    public static double[] startCoordinates(int x1, int x2, int y1, int y2){
+        double []coordinates = {
+                (x1+x2)/2,
+                (y1+y2)/2
+        };
+        return coordinates;
+    }
+
+    /**
+     * Checking bespilotnik object on having any action;
+     * If bespilotnik doesn`t have an action, it gets one;
+     */
     public void checkBehaviour() {
         if (behave == null) {
             behave = new BespilotnikBehaviour();
@@ -24,6 +41,12 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
         }
     }
 
+    /**
+     * Handling the pressing on directing buttons (up, down, left, right on the keyboard)
+     * Firstly it is checking object on having a behaviour, than it points bespilotnik on nessesary direction
+     * and notifies it to move there
+     * @param event
+     */
     @Override
     public void handle(KeyEvent event) {
         synchronized (this) {

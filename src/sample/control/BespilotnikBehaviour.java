@@ -25,12 +25,12 @@ public class BespilotnikBehaviour extends Task {
     protected Object call() throws Exception {
         synchronized (besp) {
             while (besp.getScene().getWindow().isShowing()) {
-                besp.wait();
-                moveRightLeft = besp.getCenterX() + (positiveDirection ? step : -step);
-                moveUpDown = besp.getCenterY() + (positiveDirection ? step : -step);
+                besp.wait(); //waiting for allowing to move
+                moveRightLeft = besp.getCenterX() + (positiveDirection ? step : -step); // setting a direction on horisontal line
+                moveUpDown = besp.getCenterY() + (positiveDirection ? step : -step); // the same on vertical line
 
-                isEdgeX = moveRightLeft != besp.getScene().getWidth() && moveRightLeft != 0;
-                isEdgeY = moveUpDown != besp.getScene().getHeight() && moveUpDown != 0;
+                isEdgeX = moveRightLeft != besp.getScene().getWidth() && moveRightLeft != 0; //verify the end of scene
+                isEdgeY = moveUpDown != besp.getScene().getHeight() && moveUpDown != 0; // the same
 
                     if (verticalSize) {
                         if (isEdgeX)
