@@ -14,6 +14,13 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
         setFill(Color.BLACK);
     }
 
+    public Bespilotnik(Labyrinth lab, double horizSize, double vertSize) {
+        super((lab.getStartX()==0)?lab.getStartX()-15:lab.getStartX()+15,
+                (lab.getStartY()==0)?lab.getStartY()-15:lab.getStartY()+15,
+                horizSize, vertSize);
+        setFill(Color.BLACK);
+    }
+
     private BespilotnikBehaviour behave;
 
 

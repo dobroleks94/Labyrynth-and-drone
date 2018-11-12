@@ -8,7 +8,7 @@ import javafx.geometry.Side;
 public class BespilotnikBehaviour extends Task {
     private boolean verticalSize = false;
     private boolean positiveDirection = false;
-    private double step = 10.0;
+    private double step = 30.0;
 
     private Bespilotnik besp;
     public Bespilotnik setBesp(Bespilotnik b) {
@@ -29,8 +29,8 @@ public class BespilotnikBehaviour extends Task {
                 moveRightLeft = besp.getCenterX() + (positiveDirection ? step : -step); // setting a direction on horisontal line
                 moveUpDown = besp.getCenterY() + (positiveDirection ? step : -step); // the same on vertical line
 
-                isEdgeX = moveRightLeft <= besp.getScene().getWidth()-step && moveRightLeft != 0; //verify the end of scene
-                isEdgeY = moveUpDown <= besp.getScene().getHeight()-step && moveUpDown != 0; // the same
+                isEdgeX = moveRightLeft <= besp.getScene().getWidth()-step && moveRightLeft > 0; //verify the end of scene
+                isEdgeY = moveUpDown <= besp.getScene().getHeight()-step && moveUpDown > 0; // the same
 
                     if (verticalSize) {
                         if (isEdgeX)

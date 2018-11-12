@@ -1,7 +1,6 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -32,7 +31,7 @@ public class Main extends Application {
         Drawing.drawLabyrinth(root, lab);
 
 
-        Bespilotnik  bespilotnik = new Bespilotnik(lab.getStartX(), lab.getStartY(), 10, 10);
+        Bespilotnik  bespilotnik = new Bespilotnik(lab, 12, 12);
         root.getChildren().add(bespilotnik);
 
         scene.setOnKeyPressed(bespilotnik);
