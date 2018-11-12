@@ -24,10 +24,11 @@ public class Main extends Application {
         primaryStage.setTitle("Course work");
 
         AnchorPane root = new AnchorPane();
-        Scene scene = new Scene(root, 1024, 768);
-        scene.setFill(null);
 
-        Labyrinth lab = new Labyrinth(10, 10);
+
+        Labyrinth lab = new Labyrinth(20, 20);
+        Scene scene = new Scene(root, lab.getSizeX()*35, lab.getSizeY()*35);
+        scene.setFill(null);
         Drawing.drawLabyrinth(root, lab);
 
 
