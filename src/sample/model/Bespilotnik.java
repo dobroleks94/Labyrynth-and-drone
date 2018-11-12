@@ -24,16 +24,25 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
     private BespilotnikBehaviour behave;
 
 
+
+
     /**
      * sets the centre of start line
      * where our bespilotnik will be located
      */
-    public static double[] startCoordinates(int x1, int x2, int y1, int y2){
+    public static double[] startCoordinates(double x1, double x2, double y1, double y2){
         double []coordinates = {
                 (x1+x2)/2,
                 (y1+y2)/2
         };
         return coordinates;
+    }
+    private static double[] centre;
+    public static void setCentre(double[] startCoordinates) {
+        centre = startCoordinates;
+    }
+    public static double[] getCentre() {
+        return centre;
     }
 
     /**

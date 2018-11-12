@@ -31,7 +31,7 @@ public class Main extends Application {
         Drawing.drawLabyrinth(root, lab);
 
 
-        Bespilotnik  bespilotnik = new Bespilotnik(lab, 12, 12);
+        Bespilotnik  bespilotnik = new Bespilotnik(Bespilotnik.getCentre()[0], Bespilotnik.getCentre()[1], 12, 12);
         root.getChildren().add(bespilotnik);
 
         scene.setOnKeyPressed(bespilotnik);

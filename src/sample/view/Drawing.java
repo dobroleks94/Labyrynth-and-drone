@@ -3,6 +3,7 @@ package sample.view;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import sample.model.Bespilotnik;
 import sample.model.Labyrinth;
 import sample.model.Sector;
 
@@ -63,10 +64,10 @@ public class Drawing {
         start.setStrokeWidth(4);
 
         /**
-         * start line`s coordinates
+         * start line`s centre coordinates
          */
-        lab.setStartX((int) start.getStartX());
-        lab.setStartY((int) start.getStartY());
+        Bespilotnik.setCentre(Bespilotnik.startCoordinates(start.getStartX(), start.getEndX(), start.getStartY(), start.getEndY()));
+
 
         root.getChildren().add(start);
     }
