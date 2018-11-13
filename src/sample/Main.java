@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -33,6 +34,7 @@ public class Main extends Application {
 
 
         Bespilotnik  bespilotnik = new Bespilotnik(Bespilotnik.getCentre()[0], Bespilotnik.getCentre()[1], 12, 12);
+        bespilotnik.setLabyrinth(lab);
         root.getChildren().add(bespilotnik);
 
         scene.setOnKeyPressed(bespilotnik);

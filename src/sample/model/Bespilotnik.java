@@ -21,10 +21,31 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
         setFill(Color.BLACK);
     }
 
+    private Labyrinth labyrinth;
     private BespilotnikBehaviour behave;
+    private int X;
+    private int Y;
 
+    public void setLabyrinth(Labyrinth labyrinth) {
+        this.labyrinth = labyrinth;
+    }
+    public Labyrinth getLabyrinth() {
+        return labyrinth;
+    }
 
+    public int getX() {
+        return X;
+    }
+    public int getY() {
+        return Y;
+    }
 
+    public void setX(int x) {
+        X = x;
+    }
+    public void setY(int y) {
+        Y = y;
+    }
 
     /**
      * sets the centre of start line
