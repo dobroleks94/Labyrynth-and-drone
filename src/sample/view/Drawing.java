@@ -68,14 +68,22 @@ public class Drawing {
 
     private static void drawStart(AnchorPane root, Labyrinth lab) { //ВЫДЕЛЕНИЕ СТАРТА
         Line start;
-        if (lab.getStartX() == 0)
+        if (lab.getStartX() == 0) {
             start = setLine(otstup, otstup, otstup, length, lab.getStartX(), lab.getStartY()); //ЛЕВАЯ СТЕНКА
-        else if (lab.getStartX() == lab.getSizeX() - 1)
+            lab.setStartWall("L");
+        }
+        else if (lab.getStartX() == lab.getSizeX() - 1){
             start = setLine(length, otstup, length, length, lab.getStartX(), lab.getStartY()); //ПРАВАЯ СТЕНКА
-        else if (lab.getStartY() == 0)
+            lab.setStartWall("R");
+        }
+        else if (lab.getStartY() == 0){
             start = setLine(otstup, otstup, length, otstup, lab.getStartX(), lab.getStartY());  //ВЕРХНЯЯ СТЕНКА
-        else
+            lab.setStartWall("T");
+        }
+        else{
             start = setLine(otstup, length, length, length, lab.getStartX(), lab.getStartY()); //НИЖНЯЯ СТЕНКА
+            lab.setStartWall("B");
+        }
         start.setStroke(Color.BLUE);
         start.setStrokeWidth(4);
 

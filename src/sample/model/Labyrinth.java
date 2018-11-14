@@ -9,6 +9,15 @@ public class Labyrinth {
     private int finY;
     private Sector[][] sectors;
 
+    private static String startWall;
+
+    public static String getStartWall() {
+        return startWall;
+    }
+    public void setStartWall(String startWall) {
+        this.startWall = startWall;
+    }
+
     public Labyrinth(int sizeX, int sizeY) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;

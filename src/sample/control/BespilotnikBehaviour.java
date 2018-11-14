@@ -8,7 +8,7 @@ import javafx.geometry.Side;
 public class BespilotnikBehaviour extends Task {
     private boolean verticalSize = false;
     private boolean positiveDirection = false;
-    private double step = 15.0;
+    private double step = 30.0;
     private boolean firstStep = true;
 
     private Bespilotnik besp;
@@ -17,10 +17,7 @@ public class BespilotnikBehaviour extends Task {
     }
 
     Sector sector;
-    Sector neighborSectorL;
-    Sector neighborSectorR;
-    Sector neighborSectorU;
-    Sector neighborSectorD;
+
 
     private int moveRightLeft;
     private int moveUpDown;
@@ -31,18 +28,11 @@ public class BespilotnikBehaviour extends Task {
     private boolean allowLeft;
     private boolean allowUp;
     private boolean allowDown;
-    private double UpDown;
-    private double LeftRight;
 
-    private void setStartSector(){
-        besp.setX(besp.getLabyrinth().getStartX());
-        besp.setY(besp.getLabyrinth().getStartY());
-    } //setting to bespilotnik coordinates of sector, where it is located
 
     @Override
     protected Object call() throws Exception {
         synchronized (besp) {
-            setStartSector();
             while (besp.getScene().getWindow().isShowing()) {
                 if (!firstStep)
                     besp.wait(); //waiting for allowing to move
@@ -53,50 +43,30 @@ public class BespilotnikBehaviour extends Task {
                 isNotEdgeX = moveRightLeft < besp.getLabyrinth().getSizeX() && moveRightLeft >= 0 ; //verify the end of labyrint
                 isNotEdgeY = moveUpDown < besp.getLabyrinth().getSizeY() && moveUpDown >= 0 ; // the same
 
+
+
+                /**
+                 * сделать обнаружения сектора, где будет перебывать беспилотник
+                 *  определить разрешенные направления движения
+                 */
+
+                sector = besp.getLabyrinth().getSector(besp.getY(), besp.getX());
+
                 condition:
                 if (verticalSize) {
-                    if(firstStep) {
-                        besp.setCenterX(besp.getCenterX() + (positiveDirection ? step : -step));
-                        sector = besp.getLabyrinth().getSector(besp.getY(), besp.getX());        //СНАЧАЛА У ПОТОМ Х!!!
-                        System.out.println(besp.getX());
-                        System.out.println(besp.getY());
-                        System.out.println(sector.isUp() + "\n" + sector.isRight() + "\n" + sector.isDown() + "\n" + sector.isLeft());
-                        break condition;
-                    }
                     if (isNotEdgeX) {
                         besp.setCenterX(besp.getCenterX() + (positiveDirection ? step : -step));
-                        if(!firstStep) {
-                            besp.setX(besp.getX() + (positiveDirection ? 1 : -1));
-                            sector = besp.getLabyrinth().getSector(besp.getY(), besp.getX());       //СНАЧАЛА У ПОТОМ Х!!!
-                            System.out.println(besp.getX());
-                            System.out.println(besp.getY());
-                            System.out.println(sector.isUp() + "\n" + sector.isRight() + "\n" + sector.isDown() + "\n" + sector.isLeft());
-                        }
+                        besp.setX(besp.getX() + (positiveDirection ? 1 : -1));
                     }
                 } else {
-                    if(firstStep) {
-                        besp.setCenterY(besp.getCenterY() + (positiveDirection ? step : -step));
-                        sector = besp.getLabyrinth().getSector(besp.getY(), besp.getX());       //СНАЧАЛА У ПОТОМ Х!!!
-                        System.out.println(besp.getX());
-                        System.out.println(besp.getY());
-                        System.out.println(sector.isUp() + "\n" + sector.isRight() + "\n" + sector.isDown() + "\n" + sector.isLeft());
-                        break condition;
-                    }
                     if (isNotEdgeY) {
                         besp.setCenterY(besp.getCenterY() + (positiveDirection ? step : -step));
-                        if(!firstStep) {
-                            besp.setY(besp.getY() + (positiveDirection ? 1 : -1));
-                            sector = besp.getLabyrinth().getSector(besp.getY(), besp.getX());       //СНАЧАЛА У ПОТОМ Х!!!
-                            System.out.println(besp.getX());
-                            System.out.println(besp.getY());
-                            System.out.println(sector.isUp() + "\n" + sector.isRight() + "\n" + sector.isDown() + "\n" + sector.isLeft());
-                        }
+                        besp.setY(besp.getY() + (positiveDirection ? 1 : -1));
                     }
                 }
-                if (firstStep) {
+                if (firstStep)
                     firstStep = false;
-                    step = 30.0;
-                }
+                System.out.println(besp.getX() + " " + besp.getY());
 
                 /*neighborSectorL = besp.getLabyrinth().getSector(besp.getX()-1, moveUpDown);
                 allowLeft = !sector.isLeft() && !neighborSectorL.isRight();
@@ -113,15 +83,6 @@ public class BespilotnikBehaviour extends Task {
                 neighborSectorU = besp.getLabyrinth().getSector(moveRightLeft, besp.getY()+1);
                 allowUp = sector.isUp() && neighborSectorU.isDown();
                 System.out.println("up "+allowUp);*/
-
-
-
-
-
-
-
-
-
             }
             return null;
 
