@@ -51,13 +51,24 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
      * sets the centre of start line
      * where our bespilotnik will be located
      */
-    public static double[] startCoordinates(double x1, double x2, double y1, double y2){
-        double []coordinates = {
-                (x1+x2)/2,
-                (y1+y2)/2
-        };
-        return coordinates;
+    public static double[] startCoordinates(double x1, double x2, double y1, double y2) {
+        return new double[]{
+                (x1 + x2) / 2,
+                (y1 + y2) / 2};
     }
+   /* public static double[] startCoordinates(double x1, double x2, double y1, double y2,Labyrinth lab) {
+        double x = (x1 + x2) / 2;
+        double y = (y1 + y2) / 2;
+        if (lab.getStartX() == 0)
+            x += 15;
+        else if (lab.getStartX() == lab.getSizeX() - 1)
+            x -= 15;
+        else if (lab.getStartY() == 0)
+            y += 15;
+        else
+            y -= 15;
+        return new double[]{x, y};
+    }*/
     private static double[] centre;
     public static void setCentre(double[] startCoordinates) {
         centre = startCoordinates;

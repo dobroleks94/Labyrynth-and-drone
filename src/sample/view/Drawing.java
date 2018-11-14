@@ -84,7 +84,6 @@ public class Drawing {
          */
         Bespilotnik.setCentre(Bespilotnik.startCoordinates(start.getStartX(), start.getEndX(), start.getStartY(), start.getEndY()));
 
-
         root.getChildren().add(start);
     }
 
