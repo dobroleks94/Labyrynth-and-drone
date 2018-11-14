@@ -7,7 +7,6 @@ import sample.model.Bespilotnik;
 import sample.model.Labyrinth;
 import sample.model.Sector;
 
-
 public class Drawing {
     static int otstup = 30;
     static int length = otstup * 2;
