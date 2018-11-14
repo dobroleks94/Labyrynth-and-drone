@@ -18,31 +18,44 @@ public class Drawing {
         for (int y = 0; y < sectors.length; y++) {
             for (int x = 0; x < sectors[y].length; x++) {
 
-                if (x == 0)
-                    root.getChildren().add(setLine(otstup,otstup,otstup,length,x,y)); //ЛЕВАЯ СТЕНКА
-                else if (sectors[y][x].isLeft() && sectors[y][x - 1].isRight())
-                    root.getChildren().add(setLine(otstup,otstup,otstup,length,x,y)); //ЛЕВАЯ СТЕНКА
+                if (x == 0) {
+                    root.getChildren().add(setLine(otstup, otstup, otstup, length, x, y)); //ЛЕВАЯ СТЕНКА
+                    sectors[y][x].setLeft(true);
+                } else if (sectors[y][x].isLeft() && sectors[y][x - 1].isRight()) {
+                    root.getChildren().add(setLine(otstup, otstup, otstup, length, x, y)); //ЛЕВАЯ СТЕНКА
+                    sectors[y][x].setLeft(true);
+                    sectors[y][x - 1].setRight(true);
+                }
 
+                if (x == sectors[y].length - 1) {
+                    root.getChildren().add(setLine(length, otstup, length, length, x, y)); //ПРАВАЯ СТЕНКА
+                    sectors[y][x].setRight(true);
+                } else if (sectors[y][x].isRight() && sectors[y][x + 1].isLeft()) {
+                    root.getChildren().add(setLine(length, otstup, length, length, x, y)); //ПРАВАЯ СТЕНКА
+                    sectors[y][x].setRight(true);
+                    sectors[y][x + 1].setLeft(true);
+                }
 
-                if (x == sectors[y].length - 1)
-                    root.getChildren().add(setLine(length,otstup,length,length,x,y)); //ПРАВАЯ СТЕНКА
-                else if (sectors[y][x].isRight() && sectors[y][x + 1].isLeft())
-                    root.getChildren().add(setLine(length,otstup,length,length,x,y)); //ПРАВАЯ СТЕНКА
+                if (y == 0) {
+                    root.getChildren().add(setLine(otstup, otstup, length, otstup, x, y)); //ВЕРХНЯЯ СТЕНКА
+                    sectors[y][x].setUp(true);
+                } else if (sectors[y][x].isUp() && sectors[y - 1][x].isDown()) {
+                    root.getChildren().add(setLine(otstup, otstup, length, otstup, x, y)); //ВЕРХНЯЯ СТЕНКА
+                    sectors[y][x].setUp(true);
+                    sectors[y - 1][x].setDown(true);
+                }
 
-
-                if (y == 0)
-                    root.getChildren().add(setLine(otstup,otstup,length,otstup,x,y)); //ВЕРХНЯЯ СТЕНКА
-                else if (sectors[y][x].isUp() && sectors[y - 1][x].isDown())
-                    root.getChildren().add(setLine(otstup,otstup,length,otstup,x,y)); //ВЕРХНЯЯ СТЕНКА
-
-
-                if (y == sectors.length - 1)
-                    root.getChildren().add(setLine(otstup,length,length,length,x,y)); //НИЖНЯЯ СТЕНКА
-                else if (sectors[y][x].isDown() && sectors[y + 1][x].isUp())
-                    root.getChildren().add(setLine(otstup,length,length,length,x,y)); //НИЖНЯЯ СТЕНКА
+                if (y == sectors.length - 1) {
+                    root.getChildren().add(setLine(otstup, length, length, length, x, y)); //НИЖНЯЯ СТЕНКА
+                    sectors[y][x].setDown(true);
+                } else if (sectors[y][x].isDown() && sectors[y + 1][x].isUp()) {
+                    root.getChildren().add(setLine(otstup, length, length, length, x, y)); //НИЖНЯЯ СТЕНКА
+                    sectors[y][x].setDown(true);
+                    sectors[y + 1][x].setUp(true);
+                }
             }
         }
-        drawStart(root,lab);
+        drawStart(root, lab);
         drawFin(root, lab);
     }
 
