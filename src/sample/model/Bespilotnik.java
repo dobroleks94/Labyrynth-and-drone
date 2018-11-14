@@ -9,16 +9,27 @@ import javafx.scene.shape.Ellipse;
 
 public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
 
-    public Bespilotnik(double xCentre, double yCentre, double horizSize, double vertSize) {
+    public Bespilotnik(double xCentre, double yCentre, double horizSize, double vertSize, Labyrinth lab) {
         super(xCentre, yCentre, horizSize, vertSize);
         setFill(Color.BLACK);
-    }
+        /**
+         * Defines the start sector coordinates and sets start point for Bespilotnik
+         */
+        setCenterX(getCenterX() + (Labyrinth.getStartWall().equals("L") ? 15 :
+                Labyrinth.getStartWall().equals("R") ? -15 :
+                                                0 ));
+        setCenterY(getCenterY() + (Labyrinth.getStartWall().equals("T") ? 15 :
+                Labyrinth.getStartWall().equals("B") ? -15 :
+                        0 ));
 
-    public Bespilotnik(Labyrinth lab, double horizSize, double vertSize) {
-        super((lab.getStartX()==0)?lab.getStartX()-15:lab.getStartX()+15,
-                (lab.getStartY()==0)?lab.getStartY()-15:lab.getStartY()+15,
-                horizSize, vertSize);
-        setFill(Color.BLACK);
+        //System.out.println(lab.getStartX() + " " + lab.getStartY());
+
+        /**
+         * Sets for Bespilotnik start coordinates of Labyrinth
+         */
+        setX(lab.getStartX());
+        setY(lab.getStartY());
+
     }
 
     private Labyrinth labyrinth;
@@ -33,6 +44,9 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
         return labyrinth;
     }
 
+    /**
+     * Coordinates of sector where Bespilotnik is
+     */
     public int getX() {
         return X;
     }
