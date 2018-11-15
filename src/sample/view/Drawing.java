@@ -87,6 +87,8 @@ public class Drawing {
         start.setStroke(Color.BLUE);
         start.setStrokeWidth(4);
 
+        Bespilotnik.setStart(lab.getSector(lab.getStartY(), lab.getStartX()));
+
         /**
          * start line`s centre coordinates
          */
@@ -108,6 +110,7 @@ public class Drawing {
         fin.setStroke(Color.RED);
         fin.setStrokeWidth(4);
 
+        Bespilotnik.setFinish(lab.getSector(lab.getFinY(), lab.getFinX()));
         root.getChildren().add(fin);
     }
 }

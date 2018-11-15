@@ -1,5 +1,6 @@
 package sample.control;
 
+import javafx.scene.paint.Color;
 import sample.model.*;
 import javafx.concurrent.Task;
 import javafx.geometry.Side;
@@ -17,6 +18,7 @@ public class BespilotnikBehaviour extends Task {
     }
 
     Sector sector;
+    Sector sector2;
 
 
     private int moveRightLeft;
@@ -51,7 +53,7 @@ public class BespilotnikBehaviour extends Task {
                 allowLeft = !besp.getLabyrinth().getSector(besp.getY(), besp.getX()).isLeft();
                 allowRight = !besp.getLabyrinth().getSector(besp.getY(), besp.getX()).isRight();
 
-                sector = besp.getLabyrinth().getSector(besp.getY(), besp.getX());
+                sector = besp.getLabyrinth().getSector(besp.getY(), besp.getX()); // gets sector before moving
 
                 condition:
                 if (verticalSize) {
@@ -73,15 +75,24 @@ public class BespilotnikBehaviour extends Task {
                                     (allowUp) ? -1 : 0 ));
                     }
                 }
+                sector2 = besp.getLabyrinth().getSector(besp.getY(), besp.getX()); // gets sector after moving
+
+                besp.setFill((sector2 == besp.getFinish()) ? Color.RED :
+                        (sector2 == besp.getStart()) ? Color.BLUE
+                                : Color.BLACK);
+
                 if (firstStep)
                     firstStep = false;
+
             }
             return null;
         }
     }
 
     public void moveToSide(Side side) {
-        verticalSize = side.isVertical();
-        positiveDirection = side == (verticalSize ? Side.RIGHT : Side.BOTTOM);
+        verticalSize = side.isVertical(); // defines if side, where Bespilotnik moves in Labyrinth, is vertical
+        // and sets TRUE (moves on right or on left) of FALSE (in top or bottom)
+        positiveDirection = side == (verticalSize ? Side.RIGHT : Side.BOTTOM); // defines positive direction
+        //if pressed button (side) is Side.TOP, for example, positiveDirection will be false
     }
 }

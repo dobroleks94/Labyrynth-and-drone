@@ -20,7 +20,6 @@ public class Sector {
     public void setLeft(boolean left) {
         this.left = left;
     }
-
     public void setRight(boolean right) {
         this.right = right;
     }
@@ -28,7 +27,6 @@ public class Sector {
     public void setUp(boolean up) {
         this.up = up;
     }
-
     public void setDown(boolean down) {
         this.down = down;
     }
@@ -36,15 +34,12 @@ public class Sector {
     public static int getNumver() {
         return numver;
     }
-
     public static void setNumver(int numver) {
         Sector.numver = numver;
     }
-
     public int getNumber() {
         return number;
     }
-
     public void setNumber(int number) {
         this.number = number;
     }
@@ -52,7 +47,6 @@ public class Sector {
     public boolean isLeft() {
         return left;
     }
-
     public boolean isRight() {
         return right;
     }
@@ -60,7 +54,6 @@ public class Sector {
     public boolean isUp() {
         return up;
     }
-
     public boolean isDown() {
         return down;
     }

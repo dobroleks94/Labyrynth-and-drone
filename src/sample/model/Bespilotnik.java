@@ -11,7 +11,7 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
 
     public Bespilotnik(double xCentre, double yCentre, double horizSize, double vertSize, Labyrinth lab) {
         super(xCentre, yCentre, horizSize, vertSize);
-        setFill(Color.BLACK);
+        setFill(Color.BLUE);
         /**
          * Defines the start sector coordinates and sets start point for Bespilotnik
          */
@@ -22,20 +22,40 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
                 Labyrinth.getStartWall().equals("B") ? -15 :
                         0 ));
 
-        //System.out.println(lab.getStartX() + " " + lab.getStartY());
-
         /**
          * Sets for Bespilotnik start coordinates of Labyrinth
          */
         setX(lab.getStartX());
         setY(lab.getStartY());
-
     }
 
+    private static Sector start;
+    private static Sector finish;
     private Labyrinth labyrinth;
     private BespilotnikBehaviour behave;
     private int X;
     private int Y;
+
+
+    /**
+     * gets Start sector
+     */
+    public Sector getStart() {
+        return start;
+    }
+    public static void setStart(Sector start_) {
+        start = start_;
+    }
+
+    /**
+     * gets Finish sector
+     */
+    public Sector getFinish() {
+        return finish;
+    }
+    public static void setFinish(Sector fin) {
+        finish = fin;
+    }
 
     public void setLabyrinth(Labyrinth labyrinth) {
         this.labyrinth = labyrinth;
