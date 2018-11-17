@@ -45,6 +45,22 @@ public class Main extends Application {
 
         Bespilotnik  bespilotnik4 = new Bespilotnik(bespilotnik3);
         root.getChildren().add(bespilotnik4);
+        Bespilotnik  bespilotnik5 = new Bespilotnik(bespilotnik4);
+        root.getChildren().add(bespilotnik5);
+
+        Bespilotnik  bespilotnik6 = new Bespilotnik(bespilotnik5);
+        root.getChildren().add(bespilotnik6);
+
+        Bespilotnik  bespilotnik7 = new Bespilotnik(bespilotnik6);
+        root.getChildren().add(bespilotnik7);
+        Bespilotnik  bespilotnik8 = new Bespilotnik(bespilotnik7);
+        root.getChildren().add(bespilotnik8);
+
+        Bespilotnik  bespilotnik9 = new Bespilotnik(bespilotnik8);
+        root.getChildren().add(bespilotnik9);
+
+        Bespilotnik  bespilotnik10 = new Bespilotnik(bespilotnik9);
+        root.getChildren().add(bespilotnik10);
 
         System.out.println(lab.getFinX() + " " + lab.getFinY());
 

@@ -12,6 +12,7 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
 
     private static int name = 1;
     private int n ;
+
     public Bespilotnik(double xCentre, double yCentre, double horizSize, double vertSize, Labyrinth lab) {
         super(xCentre, yCentre, horizSize, vertSize);
         color = Color.BLACK;
@@ -79,6 +80,14 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
     private Bespilotnik child; //  leadBesp follower
     private boolean firstStep = true;
     private boolean isOnFinish;
+    private boolean canMove;
+
+    public boolean isCanMove() {
+        return canMove;
+    }
+    public void setCanMove(boolean canMove) {
+        this.canMove = canMove;
+    }
 
     public boolean isOnFinish() {
         return isOnFinish;
@@ -162,9 +171,6 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
         start = start_;
     }
 
-    /**
-     * gets Finish sector
-     */
     public Sector getFinish() {
         return finish;
     }

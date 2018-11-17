@@ -32,7 +32,6 @@ public class BespilotnikBehaviour extends Task {
     private boolean allowUp;
     private boolean allowDown;
     Labyrinth labyrinth;
-    private int allOnFinish = 0;
 
 
     @Override
@@ -61,6 +60,8 @@ public class BespilotnikBehaviour extends Task {
                             allowLeft = !besp.getLabyrinth().getSector(besp.getY(), besp.getX()).isLeft();
                             allowRight = !besp.getLabyrinth().getSector(besp.getY(), besp.getX()).isRight();
 
+
+
                             sector = besp.getLabyrinth().getSector(besp.getY(), besp.getX()); // gets sector before moving
 
                             besp.setPreviousCentreX(besp.getCenterX());
@@ -88,24 +89,33 @@ public class BespilotnikBehaviour extends Task {
                                                 (allowUp) ? -1 : 0));
                                     }
                                 }
+                                if(besp.getChild() != null)
+                                    if(!besp.getChild().isCanMove())
+                                        besp.getChild().setCanMove(true);
                             }
 
                         } else if (!besp.isOperated()) {
-                            if (!besp.isOnFinish()) {
-                                besp.setPreviousCentreX(besp.getCenterX());
-                                besp.setCenterX(besp.getLeadBesp().getPreviousCentreX());
+                            if (!besp.isOnFinish() && besp.isCanMove()) {
+                                if(besp.getLeadBesp().getCenterX() != besp.getLeadBesp().getPreviousCentreX()
+                                  || besp.getLeadBesp().getCenterY() != besp.getLeadBesp().getPreviousCentreY()) {
+                                    besp.setPreviousCentreX(besp.getCenterX());
+                                    besp.setCenterX(besp.getLeadBesp().getPreviousCentreX());
 
-                                besp.setPreviousCentreY(besp.getCenterY());
-                                besp.setCenterY(besp.getLeadBesp().getPreviousCentreY());
+                                    besp.setPreviousX(besp.getX());
+                                    besp.setX(besp.getLeadBesp().getPreviousX());
 
-                                besp.setPreviousX(besp.getX());
-                                besp.setX(besp.getLeadBesp().getPreviousX());
+                                    besp.setPreviousCentreY(besp.getCenterY());
+                                    besp.setCenterY(besp.getLeadBesp().getPreviousCentreY());
 
-                                besp.setPreviousY(besp.getY());
-                                besp.setY(besp.getLeadBesp().getPreviousY());
+                                    besp.setPreviousY(besp.getY());
+                                    besp.setY(besp.getLeadBesp().getPreviousY());
+
+                                    if(besp.getChild() != null)
+                                        if(!besp.getChild().isCanMove())
+                                            besp.getChild().setCanMove(true);
+                                }
                             }
                         }
-
 
                         besp.setCurrentSector(labyrinth.getSector(besp.getY(), besp.getX())); // gets sector after moving
 
@@ -130,7 +140,7 @@ public class BespilotnikBehaviour extends Task {
                                 }
                         }
 
-                        Thread.sleep(150);
+                        Thread.sleep(25);
                     }
                 }
             }
