@@ -1,22 +1,12 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import sample.control.GroupBespil;
 import sample.model.Bespilotnik;
 import sample.model.Labyrinth;
 import sample.view.Drawing;
-
-import java.awt.*;
-import java.util.LinkedList;
 
 public class Main extends Application {
 

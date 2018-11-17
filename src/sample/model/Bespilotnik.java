@@ -65,7 +65,7 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
     private Sector currentSector;
 
     private Labyrinth labyrinth;
-    private BespilotnikBehaviour behave;
+    private Controller behave;
 
     private int X;
     private int Y;
@@ -227,7 +227,7 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
      */
     public void checkBehaviour() {
         if (behave == null) {
-            behave = new BespilotnikBehaviour();
+            behave = new Controller();
             behave.setBesp(this);
             new Thread(behave).start();
         }

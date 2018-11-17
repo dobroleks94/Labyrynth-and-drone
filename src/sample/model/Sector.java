@@ -1,10 +1,7 @@
 package sample.model;
 
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import sample.view.Drawing;
-
-import java.awt.*;
 
 public class Sector {
     private boolean left;//Наличие стенок с определенной стороны

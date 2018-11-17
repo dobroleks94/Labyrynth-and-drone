@@ -11,11 +11,11 @@ public class Labyrinth {
 
     private static String startWall;
 
-    public static String getStartWall() {
+    static String getStartWall() {
         return startWall;
     }
-    public void setStartWall(String startWall) {
-        this.startWall = startWall;
+    public void setStartWall(String startWalll) {
+        startWall = startWalll;
     }
 
     private static String finishWall;
@@ -23,8 +23,8 @@ public class Labyrinth {
     public static String getFinishWall() {
         return finishWall;
     }
-    public void setFinishWall(String finishWall) {
-        this.finishWall = finishWall;
+    public void setFinishWall(String finishWalll) {
+        finishWall = finishWalll;
     }
 
     public Labyrinth(int sizeX, int sizeY) {
