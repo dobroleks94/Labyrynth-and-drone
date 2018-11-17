@@ -46,6 +46,7 @@ public class Main extends Application {
         Bespilotnik  bespilotnik4 = new Bespilotnik(bespilotnik3);
         root.getChildren().add(bespilotnik4);
 
+        System.out.println(lab.getFinX() + " " + lab.getFinY());
 
         scene.setOnKeyPressed(bespilotnik);
         primaryStage.setScene(scene);

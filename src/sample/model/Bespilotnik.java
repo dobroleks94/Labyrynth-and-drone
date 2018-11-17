@@ -21,7 +21,7 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
          */
         setCenterX(getCenterX() + (Labyrinth.getStartWall().equals("L") ? 15 :
                 Labyrinth.getStartWall().equals("R") ? -15 :
-                                                0 ));
+                        0 ));
         setCenterY(getCenterY() + (Labyrinth.getStartWall().equals("T") ? 15 :
                 Labyrinth.getStartWall().equals("B") ? -15 :
                         0 ));
@@ -78,13 +78,13 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
     private Bespilotnik leadBesp; //previous bespilotnik, which leads this one
     private Bespilotnik child; //  leadBesp follower
     private boolean firstStep = true;
-    private boolean block;
+    private boolean isOnFinish;
 
-    public boolean isBlock() {
-        return block;
+    public boolean isOnFinish() {
+        return isOnFinish;
     }
-    public void setBlock(boolean block) {
-        this.block = block;
+    public void setOnFinish(boolean onFinish) {
+        isOnFinish = onFinish;
     }
 
     public Paint ownColor() {

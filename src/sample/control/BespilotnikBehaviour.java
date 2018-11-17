@@ -32,6 +32,7 @@ public class BespilotnikBehaviour extends Task {
     private boolean allowUp;
     private boolean allowDown;
     Labyrinth labyrinth;
+    private int allOnFinish = 0;
 
 
     @Override
@@ -40,6 +41,7 @@ public class BespilotnikBehaviour extends Task {
             synchronized (_besp) {
                 while (_besp.getScene().getWindow().isShowing()) {
                     labyrinth = _besp.getLabyrinth();
+                    everyBesp:
                     for (Bespilotnik besp : GroupBespil.getGroup()) {
                         if (besp.isOperated()) {
                             if (!besp.isFirstStep())
@@ -66,40 +68,42 @@ public class BespilotnikBehaviour extends Task {
                             besp.setPreviousX(besp.getX());
                             besp.setPreviousY(besp.getY());
 
-                            condition:
-                            if (verticalSize) {
-                                if (isNotEdgeX) {
-                                    besp.setCenterX(besp.getCenterX() + (positiveDirection ?
-                                            (allowRight) ? step : 0 :
-                                            (allowLeft) ? -step : 0));
-                                    besp.setX(besp.getX() + (positiveDirection ?
-                                            (allowRight) ? 1 : 0 :
-                                            (allowLeft) ? -1 : 0));
-                                }
-                            } else {
-                                if (isNotEdgeY) {
-                                    besp.setCenterY(besp.getCenterY() + (positiveDirection ?
-                                            (allowDown) ? step : 0 :
-                                            (allowUp) ? -step : 0));
-                                    besp.setY(besp.getY() + (positiveDirection ?
-                                            (allowDown) ? 1 : 0 :
-                                            (allowUp) ? -1 : 0));
+                            if (!besp.isOnFinish()) {
+                                if (verticalSize) {
+                                    if (isNotEdgeX) {
+                                        besp.setCenterX(besp.getCenterX() + (positiveDirection ?
+                                                (allowRight) ? step : 0 :
+                                                (allowLeft) ? -step : 0));
+                                        besp.setX(besp.getX() + (positiveDirection ?
+                                                (allowRight) ? 1 : 0 :
+                                                (allowLeft) ? -1 : 0));
+                                    }
+                                } else {
+                                    if (isNotEdgeY) {
+                                        besp.setCenterY(besp.getCenterY() + (positiveDirection ?
+                                                (allowDown) ? step : 0 :
+                                                (allowUp) ? -step : 0));
+                                        besp.setY(besp.getY() + (positiveDirection ?
+                                                (allowDown) ? 1 : 0 :
+                                                (allowUp) ? -1 : 0));
+                                    }
                                 }
                             }
 
                         } else if (!besp.isOperated()) {
+                            if (!besp.isOnFinish()) {
+                                besp.setPreviousCentreX(besp.getCenterX());
+                                besp.setCenterX(besp.getLeadBesp().getPreviousCentreX());
 
-                            besp.setPreviousCentreX(besp.getCenterX());
-                            besp.setCenterX(besp.getLeadBesp().getPreviousCentreX());
+                                besp.setPreviousCentreY(besp.getCenterY());
+                                besp.setCenterY(besp.getLeadBesp().getPreviousCentreY());
 
-                            besp.setPreviousCentreY(besp.getCenterY());
-                            besp.setCenterY(besp.getLeadBesp().getPreviousCentreY());
+                                besp.setPreviousX(besp.getX());
+                                besp.setX(besp.getLeadBesp().getPreviousX());
 
-                            besp.setPreviousX(besp.getX());
-                            besp.setX(besp.getLeadBesp().getPreviousX());
-
-                            besp.setPreviousY(besp.getY());
-                            besp.setY(besp.getLeadBesp().getPreviousY());
+                                besp.setPreviousY(besp.getY());
+                                besp.setY(besp.getLeadBesp().getPreviousY());
+                            }
                         }
 
 
@@ -115,10 +119,20 @@ public class BespilotnikBehaviour extends Task {
                                 (besp.getCurrentSector() == besp.getStart()) ? Color.BLUE
                                         : besp.ownColor());
 
-                        Thread.sleep(100);
+                        if (besp.getCurrentSector() == besp.getFinish()) {
+                            besp.setOnFinish(true);
+                            for (Bespilotnik bespilotnik : GroupBespil.getGroup())
+                                if (!bespilotnik.isOnFinish()) {
+                                    bespilotnik.setCenterX(bespilotnik.getLeadBesp().getCenterX());
+                                    bespilotnik.setCenterY(bespilotnik.getLeadBesp().getCenterY());
+                                    bespilotnik.setX(bespilotnik.getLeadBesp().getX());
+                                    bespilotnik.setY(bespilotnik.getLeadBesp().getY());
+                                }
+                        }
+
+                        Thread.sleep(150);
                     }
                 }
-
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -20,7 +20,7 @@ public class Drawing {
             for (int x = 0; x < sectors[y].length; x++) {
 
                 if (x == 0) {
-                    sectors[y][x].setLeftLine(setLine(otstup, otstup, otstup, length, x, y),0);
+                    sectors[y][x].setLeftLine(setLine(otstup, otstup, otstup, length, x, y),3);
                     lines.add(sectors[y][x].getLeftLine()); //ЛЕВАЯ СТЕНКА
                     sectors[y][x].setLeft(true);
                 } else if (sectors[y][x].isLeft() && sectors[y][x - 1].isRight()) {
@@ -32,7 +32,7 @@ public class Drawing {
                 }
 
                 if (x == sectors[y].length - 1) {
-                    sectors[y][x].setRightLine(setLine(length, otstup, length, length, x, y),0);
+                    sectors[y][x].setRightLine(setLine(length, otstup, length, length, x, y),3);
                     lines.add(sectors[y][x].getRightLine()); //ПРАВАЯ СТЕНКА
                     sectors[y][x].setRight(true);
                 } else if (sectors[y][x].isRight() && sectors[y][x + 1].isLeft()) {
@@ -44,7 +44,7 @@ public class Drawing {
                 }
 
                 if (y == 0) {
-                    sectors[y][x].setUpLine(setLine(otstup, otstup, length, otstup, x, y),0); //ВЕРХНЯЯ СТЕНКА
+                    sectors[y][x].setUpLine(setLine(otstup, otstup, length, otstup, x, y),3); //ВЕРХНЯЯ СТЕНКА
                     lines.add(sectors[y][x].getUpLine());
                     sectors[y][x].setUp(true);
                 } else if (sectors[y][x].isUp() && sectors[y - 1][x].isDown()) {
@@ -56,7 +56,7 @@ public class Drawing {
                 }
 
                 if (y == sectors.length - 1) {
-                    sectors[y][x].setDownLine(setLine(otstup, length, length, length, x, y),0); //НИЖНЯЯ СТЕНКА
+                    sectors[y][x].setDownLine(setLine(otstup, length, length, length, x, y),3); //НИЖНЯЯ СТЕНКА
                     lines.add(sectors[y][x].getDownLine());
                     sectors[y][x].setDown(true);
                 } else if (sectors[y][x].isDown() && sectors[y + 1][x].isUp()) {
@@ -72,10 +72,6 @@ public class Drawing {
         Bespilotnik.setFinish(lab.getSector(lab.getFinY(), lab.getFinX()));
         root.getChildren().addAll(lines);
     }
-
-
-
-
 
 
     private static Line setLine(int x1, int y1, int x2, int y2, int x, int y) {
@@ -117,29 +113,37 @@ public class Drawing {
         if (lab.getFinX() == 0) {
             lab.getSector(lab.getFinY(), lab.getFinX()).setLeftLine(lab.getSector(lab.getFinY(), lab.getFinX()).getLeftLine(), 2); //ЛЕВАЯ СТЕНКА
             lab.setFinishWall("L");
+            lab.getSector(lab.getFinY(),lab.getFinX()).setLeft(false);
         } else if (lab.getFinX() == lab.getSizeX() - 1) {
             lab.getSector(lab.getFinY(), lab.getFinX()).setRightLine(lab.getSector(lab.getFinY(), lab.getFinX()).getRightLine(), 2);   //ПРАВАЯ СТЕНКА
             lab.setFinishWall("R");
+            lab.getSector(lab.getFinY(),lab.getFinX()).setRight(false);
         } else if (lab.getFinY() == 0) {
             lab.getSector(lab.getFinY(), lab.getFinX()).setUpLine(lab.getSector(lab.getFinY(), lab.getFinX()).getUpLine(), 2);  //ВЕРХНЯЯ СТЕНКА
             lab.setFinishWall("T");
+            lab.getSector(lab.getFinY(),lab.getFinX()).setUp(false);
         } else {
             lab.getSector(lab.getFinY(), lab.getFinX()).setDownLine(lab.getSector(lab.getFinY(), lab.getFinX()).getDownLine(), 2); //НИЖНЯЯ СТЕНКА
             lab.setFinishWall("B");
+            lab.getSector(lab.getFinY(),lab.getFinX()).setDown(false);
         }
     }
 
-    public static Line typeLine(Line line, int type){
+    public static Line typeLine(Line line, int type) {
         switch (type) {
             case 0:
+
                 line.setStroke(Color.WHITE);
                 return line;
             case 1:
                 line.setStroke(Color.BLUE);
                 return line;
-            default:
+            case 2:
                 line.setStroke(Color.RED);
                 line.setStrokeWidth(3);
+                return line;
+            default:
+                line.setStroke(Color.BLACK);
                 return line;
         }
     }
