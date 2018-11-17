@@ -99,14 +99,22 @@ public class Drawing {
 
     private static void drawFin(AnchorPane root, Labyrinth lab) { //ВЫДЕЛЕНИЕ ФИНИША
         Line fin;
-        if (lab.getFinX() == 0)
+        if (lab.getFinX() == 0) {
             fin = setLine(otstup, otstup, otstup, length, lab.getFinX(), lab.getFinY()); //ЛЕВАЯ СТЕНКА
-        else if (lab.getFinX() == lab.getSizeX() - 1)
+            lab.setFinishWall("L");
+        }
+        else if (lab.getFinX() == lab.getSizeX() - 1) {
             fin = setLine(length, otstup, length, length, lab.getFinX(), lab.getFinY());   //ПРАВАЯ СТЕНКА
-        else if (lab.getFinY() == 0)
+            lab.setFinishWall("R");
+        }
+        else if (lab.getFinY() == 0) {
             fin = setLine(otstup, otstup, length, otstup, lab.getFinX(), lab.getFinY());  //ВЕРХНЯЯ СТЕНКА
-        else
+            lab.setFinishWall("T");
+        }
+        else {
             fin = setLine(otstup, length, length, length, lab.getFinX(), lab.getFinY()); //НИЖНЯЯ СТЕНКА
+            lab.setFinishWall("B");
+        }
         fin.setStroke(Color.RED);
         fin.setStrokeWidth(4);
 

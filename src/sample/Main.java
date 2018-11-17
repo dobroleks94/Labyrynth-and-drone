@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import sample.control.GroupBespil;
 import sample.model.Bespilotnik;
 import sample.model.Labyrinth;
 import sample.view.Drawing;
@@ -34,8 +35,17 @@ public class Main extends Application {
 
 
         Bespilotnik  bespilotnik = new Bespilotnik(Bespilotnik.getCentre()[0], Bespilotnik.getCentre()[1], 12, 12, lab);
-        bespilotnik.setLabyrinth(lab);
         root.getChildren().add(bespilotnik);
+
+        Bespilotnik  bespilotnik2 = new Bespilotnik(bespilotnik);
+        root.getChildren().add(bespilotnik2);
+
+        Bespilotnik  bespilotnik3 = new Bespilotnik(bespilotnik2);
+        root.getChildren().add(bespilotnik3);
+
+        Bespilotnik  bespilotnik4 = new Bespilotnik(bespilotnik3);
+        root.getChildren().add(bespilotnik4);
+
 
         scene.setOnKeyPressed(bespilotnik);
         primaryStage.setScene(scene);

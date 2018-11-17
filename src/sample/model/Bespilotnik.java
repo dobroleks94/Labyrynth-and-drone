@@ -1,5 +1,6 @@
 package sample.model;
 
+import javafx.scene.paint.Paint;
 import sample.control.*;
 import javafx.event.EventHandler;
 import javafx.geometry.Side;
@@ -9,9 +10,12 @@ import javafx.scene.shape.Ellipse;
 
 public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
 
+    private static int name = 1;
+    private int n ;
     public Bespilotnik(double xCentre, double yCentre, double horizSize, double vertSize, Labyrinth lab) {
         super(xCentre, yCentre, horizSize, vertSize);
-        setFill(Color.BLUE);
+        color = Color.BLACK;
+        setLabyrinth(lab);
         /**
          * Defines the start sector coordinates and sets start point for Bespilotnik
          */
@@ -27,19 +31,130 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
          */
         setX(lab.getStartX());
         setY(lab.getStartY());
+        isOperated = true;
+        GroupBespil.addToGroup(this);
+        n = name;
+        name++;
     }
+    public Bespilotnik(Bespilotnik bespilotnik){
+
+        setLeadBesp(bespilotnik);
+
+        setRadiusX(getLeadBesp().getRadiusX());
+        setRadiusY(getLeadBesp().getRadiusY());
+        setCenterX(getLeadBesp().getCenterX());
+        setCenterY(getLeadBesp().getCenterY());
+        setX(getLeadBesp().getX());
+        setY(getLeadBesp().getY());
+
+        isOperated = false;
+        color = Color.GREEN;
+
+        bespilotnik.setChild(this);
+
+        GroupBespil.addToGroup(this);
+        n = name;
+        name++;
+    }
+
+    private Paint color;
 
     private static Sector start;
     private static Sector finish;
+    private Sector currentSector;
+
     private Labyrinth labyrinth;
     private BespilotnikBehaviour behave;
+
     private int X;
     private int Y;
+    double previousCentreX;
+    double previousCentreY;
+    int previousX;
+    int previousY;
 
+    private boolean isOperated;
+
+    private Bespilotnik leadBesp; //previous bespilotnik, which leads this one
+    private Bespilotnik child; //  leadBesp follower
+    private boolean firstStep = true;
+    private boolean block;
+
+    public boolean isBlock() {
+        return block;
+    }
+    public void setBlock(boolean block) {
+        this.block = block;
+    }
+
+    public Paint ownColor() {
+        return color;
+    }
 
     /**
-     * gets Start sector
+     * Sets previous labyrint`s and field`s coordinates of leader Bespilotnik
      */
+    public double getPreviousCentreX() {
+        return previousCentreX;
+    }
+    public void setPreviousCentreX(double previousCentreX) {
+        this.previousCentreX = previousCentreX;
+    }
+    public double getPreviousCentreY() {
+        return previousCentreY;
+    }
+    public void setPreviousCentreY(double previousCentreY) {
+        this.previousCentreY = previousCentreY;
+    }
+
+    public int getPreviousX() {
+        return previousX;
+    }
+    public void setPreviousX(int previousX) {
+        this.previousX = previousX;
+    }
+    public int getPreviousY() {
+        return previousY;
+    }
+    public void setPreviousY(int previousY) {
+        this.previousY = previousY;
+    }
+    //****************************************************************************
+
+    public boolean isFirstStep() {
+        return firstStep;
+    }
+    public void setFirstStep(boolean firstStep) {
+        this.firstStep = firstStep;
+    }
+
+    public Sector getCurrentSector() {
+        return currentSector;
+    }
+    public void setCurrentSector(Sector currentSector) {
+        this.currentSector = currentSector;
+    }
+
+    public Bespilotnik getLeadBesp() {
+        return leadBesp;
+    }
+    public void setLeadBesp(Bespilotnik besp) {this.leadBesp = besp;}
+
+    public void setChild(Bespilotnik child) {
+        this.child = child;
+    }
+    public Bespilotnik getChild() {
+        return child;
+    }
+
+    /**
+     * defines bespilotnik, which will be controlled by operator
+     */
+    public boolean isOperated() {
+        return isOperated;
+    }
+    //*******************************************************************************
+
     public Sector getStart() {
         return start;
     }
@@ -138,6 +253,11 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
             }
             notify();
         }
+    }
+
+    @Override
+    public String toString() {
+        return ""+n;
     }
 
 }
