@@ -73,8 +73,8 @@ public class Labyrinth {
         sectors[indexY][indexX] = s;
     }
 
-    public Sector getSector(int indexX,int indexY){
-        return sectors[indexX][indexY];
+    public Sector getSector(int indexY,int indexX){
+        return sectors[indexY][indexX];
     }
 
     public void setSectors(Sector[][] sectors) {

@@ -7,22 +7,25 @@ import sample.model.Bespilotnik;
 import sample.model.Labyrinth;
 import sample.model.Sector;
 
+import java.util.HashSet;
+
 public class Drawing {
     static int otstup = 30;
     static int length = otstup * 2;
 
     public static void drawLabyrinth(AnchorPane root, Labyrinth lab) { //Отображение всех секторов лабиринта
         Sector[][] sectors = lab.getSectors();
+        HashSet<Line> lines=new HashSet<>();
         for (int y = 0; y < sectors.length; y++) {
             for (int x = 0; x < sectors[y].length; x++) {
 
                 if (x == 0) {
                     sectors[y][x].setLeftLine(setLine(otstup, otstup, otstup, length, x, y),0);
-                    root.getChildren().add(sectors[y][x].getLeftLine()); //ЛЕВАЯ СТЕНКА
+                    lines.add(sectors[y][x].getLeftLine()); //ЛЕВАЯ СТЕНКА
                     sectors[y][x].setLeft(true);
                 } else if (sectors[y][x].isLeft() && sectors[y][x - 1].isRight()) {
                     sectors[y][x].setLeftLine(setLine(otstup, otstup, otstup, length, x, y),0);
-                    root.getChildren().add(sectors[y][x].getLeftLine()); //ЛЕВАЯ СТЕНКА
+                    lines.add(sectors[y][x].getLeftLine()); //ЛЕВАЯ СТЕНКА
                 } else {
                     sectors[y][x].setLeft(false);
                     sectors[y][x - 1].setRight(false);
@@ -30,11 +33,11 @@ public class Drawing {
 
                 if (x == sectors[y].length - 1) {
                     sectors[y][x].setRightLine(setLine(length, otstup, length, length, x, y),0);
-                    root.getChildren().add(sectors[y][x].getRightLine()); //ПРАВАЯ СТЕНКА
+                    lines.add(sectors[y][x].getRightLine()); //ПРАВАЯ СТЕНКА
                     sectors[y][x].setRight(true);
                 } else if (sectors[y][x].isRight() && sectors[y][x + 1].isLeft()) {
                     sectors[y][x].setRightLine(setLine(length, otstup, length, length, x, y),0);
-                    root.getChildren().add(sectors[y][x].getRightLine()); //ПРАВАЯ СТЕНКА
+                    lines.add(sectors[y][x].getRightLine()); //ПРАВАЯ СТЕНКА
                 } else {
                     sectors[y][x].setRight(false);
                     sectors[y][x + 1].setLeft(false);
@@ -42,11 +45,11 @@ public class Drawing {
 
                 if (y == 0) {
                     sectors[y][x].setUpLine(setLine(otstup, otstup, length, otstup, x, y),0); //ВЕРХНЯЯ СТЕНКА
-                    root.getChildren().add(sectors[y][x].getUpLine());
+                    lines.add(sectors[y][x].getUpLine());
                     sectors[y][x].setUp(true);
                 } else if (sectors[y][x].isUp() && sectors[y - 1][x].isDown()) {
                     sectors[y][x].setUpLine(setLine(otstup, otstup, length, otstup, x, y),0); //ВЕРХНЯЯ СТЕНКА
-                    root.getChildren().add(sectors[y][x].getUpLine());
+                    lines.add(sectors[y][x].getUpLine());
                 } else {
                     sectors[y][x].setUp(false);
                     sectors[y - 1][x].setDown(false);
@@ -54,11 +57,11 @@ public class Drawing {
 
                 if (y == sectors.length - 1) {
                     sectors[y][x].setDownLine(setLine(otstup, length, length, length, x, y),0); //НИЖНЯЯ СТЕНКА
-                    root.getChildren().add(sectors[y][x].getDownLine());
+                    lines.add(sectors[y][x].getDownLine());
                     sectors[y][x].setDown(true);
                 } else if (sectors[y][x].isDown() && sectors[y + 1][x].isUp()) {
                     sectors[y][x].setDownLine(setLine(otstup, length, length, length, x, y),0); //НИЖНЯЯ СТЕНКА
-                    root.getChildren().add(sectors[y][x].getDownLine());
+                    lines.add(sectors[y][x].getDownLine());
                 } else {
                     sectors[y][x].setDown(false);
                     sectors[y + 1][x].setUp(false);
@@ -66,7 +69,8 @@ public class Drawing {
             }
         }
         drawStart(root, lab);
-        drawFin(root, lab);
+        Bespilotnik.setFinish(lab.getSector(lab.getFinY(), lab.getFinX()));
+        root.getChildren().addAll(lines);
     }
 
 
@@ -109,29 +113,20 @@ public class Drawing {
         root.getChildren().add(start);
     }
 
-    private static void drawFin(AnchorPane root, Labyrinth lab) { //ВЫДЕЛЕНИЕ ФИНИША
-        Line fin;
+    private static void drawFin(Labyrinth lab) { //ВЫДЕЛЕНИЕ ФИНИША
         if (lab.getFinX() == 0) {
-            fin = setLine(otstup, otstup, otstup, length, lab.getFinX(), lab.getFinY()); //ЛЕВАЯ СТЕНКА
+            lab.getSector(lab.getFinY(), lab.getFinX()).setLeftLine(lab.getSector(lab.getFinY(), lab.getFinX()).getLeftLine(), 2); //ЛЕВАЯ СТЕНКА
             lab.setFinishWall("L");
-        }
-        else if (lab.getFinX() == lab.getSizeX() - 1) {
-            fin = setLine(length, otstup, length, length, lab.getFinX(), lab.getFinY());   //ПРАВАЯ СТЕНКА
+        } else if (lab.getFinX() == lab.getSizeX() - 1) {
+            lab.getSector(lab.getFinY(), lab.getFinX()).setRightLine(lab.getSector(lab.getFinY(), lab.getFinX()).getRightLine(), 2);   //ПРАВАЯ СТЕНКА
             lab.setFinishWall("R");
-        }
-        else if (lab.getFinY() == 0) {
-            fin = setLine(otstup, otstup, length, otstup, lab.getFinX(), lab.getFinY());  //ВЕРХНЯЯ СТЕНКА
+        } else if (lab.getFinY() == 0) {
+            lab.getSector(lab.getFinY(), lab.getFinX()).setUpLine(lab.getSector(lab.getFinY(), lab.getFinX()).getUpLine(), 2);  //ВЕРХНЯЯ СТЕНКА
             lab.setFinishWall("T");
-        }
-        else {
-            fin = setLine(otstup, length, length, length, lab.getFinX(), lab.getFinY()); //НИЖНЯЯ СТЕНКА
+        } else {
+            lab.getSector(lab.getFinY(), lab.getFinX()).setDownLine(lab.getSector(lab.getFinY(), lab.getFinX()).getDownLine(), 2); //НИЖНЯЯ СТЕНКА
             lab.setFinishWall("B");
         }
-        fin.setStroke(Color.RED);
-        fin.setStrokeWidth(4);
-
-        Bespilotnik.setFinish(lab.getSector(lab.getFinY(), lab.getFinX()));
-        root.getChildren().add(fin);
     }
 
     public static Line typeLine(Line line, int type){
@@ -144,46 +139,58 @@ public class Drawing {
                 return line;
             default:
                 line.setStroke(Color.RED);
+                line.setStrokeWidth(3);
                 return line;
         }
     }
 
     public static void skyLine(Labyrinth lab,int y,int x) {
-        try {
-            Sector[][] sectors = lab.getSectors();
 
-            visibleLine(sectors[y][x]);
-            if (y != 0) {
-                visibleLine(sectors[y - 1][x]);
-                if (x != 0)
-                    visibleLine(sectors[y - 1][x - 1]);
-                if (x != lab.getSizeX() - 1)
-                    visibleLine(sectors[y - 1][x + 1]);
-            }
-            if (y != lab.getSizeY()-1) {
-                visibleLine(sectors[y + 1][x]);
-                if (x != 0)
-                    visibleLine(sectors[y + 1][x - 1]);
-                if (x != lab.getSizeX() - 1)
-                    visibleLine(sectors[y + 1][x + 1]);
-            }
-            if (x != 0)
-                visibleLine(sectors[y][x - 1]);
-            if (x != lab.getSizeX() - 1)
-                visibleLine(sectors[y][x + 1]);
-        } catch (Exception e) {
-            e.printStackTrace();
+        Sector[][] sectors = lab.getSectors();
+        visibleLine(sectors[y][x], 5);
+        if (x != 0)
+            visibleLine(sectors[y][x - 1], 2);
+        if (x != lab.getSizeX() - 1)
+            visibleLine(sectors[y][x + 1], 4);
+        if (y != 0)
+            visibleLine(sectors[y - 1][x], 3);
+        if (y != lab.getSizeY() - 1)
+            visibleLine(sectors[y + 1][x], 1);
+        if (x == lab.getFinX() && y == lab.getFinY()) {
+            drawFin(lab);
+            return;
         }
     }
 
-    public static void visibleLine(Sector sector){
-        if(sector.getLeftLine()!=null)
-            sector.getLeftLine().setStroke(Color.BLACK);
-        if(sector.getRightLine()!=null)
-            sector.getRightLine().setStroke(Color.BLACK);
-        if(sector.getUpLine()!=null)
-            sector.getUpLine().setStroke(Color.BLACK);
-        if(sector.getDownLine()!=null)
-            sector.getDownLine().setStroke(Color.BLACK);
+    public static void visibleLine(Sector sector,int type) {
+        switch (type) {
+            case 4:
+                if (sector.getLeftLine() != null)
+                    sector.getLeftLine().setStroke(Color.BLACK);
+                break;
+            case 2:
+                if (sector.getRightLine() != null)
+                    sector.getRightLine().setStroke(Color.BLACK);
+                break;
+            case 1:
+                if (sector.getUpLine() != null)
+                    sector.getUpLine().setStroke(Color.BLACK);
+                break;
+            case 3:
+                if (sector.getDownLine() != null)
+                    sector.getDownLine().setStroke(Color.BLACK);
+                break;
+            case 5:
+                if (sector.getLeftLine() != null)
+                    sector.getLeftLine().setStroke(Color.BLACK);
+                if (sector.getRightLine() != null)
+                    sector.getRightLine().setStroke(Color.BLACK);
+                if (sector.getUpLine() != null)
+                    sector.getUpLine().setStroke(Color.BLACK);
+                if (sector.getDownLine() != null)
+                    sector.getDownLine().setStroke(Color.BLACK);
+                break;
+
+        }
     }
 }

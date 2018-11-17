@@ -104,6 +104,7 @@ public class BespilotnikBehaviour extends Task {
 
 
                         besp.setCurrentSector(labyrinth.getSector(besp.getY(), besp.getX())); // gets sector after moving
+
                         Drawing.skyLine(labyrinth, besp.getY(), besp.getX());
 
                         if (besp.isFirstStep())
@@ -114,7 +115,7 @@ public class BespilotnikBehaviour extends Task {
                                 (besp.getCurrentSector() == besp.getStart()) ? Color.BLUE
                                         : besp.ownColor());
 
-                        Thread.sleep(50);
+                        Thread.sleep(100);
                     }
                 }
 
