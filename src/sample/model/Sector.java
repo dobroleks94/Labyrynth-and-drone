@@ -1,25 +1,33 @@
 package sample.model;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import sample.view.Drawing;
+
+import java.awt.*;
+
 public class Sector {
-    private  boolean left;//Наличие стенок с определенной стороны
-    private  boolean right;
-    private  boolean up;
-    private  boolean down;
-    private static int numver=0; //Only for debug
-    private int number; //Only for debug
+    private boolean left;//Наличие стенок с определенной стороны
+    private boolean right;
+    private boolean up;
+    private boolean down;
+
+    private Line leftLine;
+    private Line rightLine;
+    private Line upLine;
+    private Line downLine;
 
     public Sector(boolean left, boolean right, boolean up, boolean down) {
         this.left = left;
         this.right = right;
         this.up = up;
         this.down = down;
-        numver++;
-        number=numver;
     }
 
     public void setLeft(boolean left) {
         this.left = left;
     }
+
     public void setRight(boolean right) {
         this.right = right;
     }
@@ -27,26 +35,16 @@ public class Sector {
     public void setUp(boolean up) {
         this.up = up;
     }
+
     public void setDown(boolean down) {
         this.down = down;
     }
 
-    public static int getNumver() {
-        return numver;
-    }
-    public static void setNumver(int numver) {
-        Sector.numver = numver;
-    }
-    public int getNumber() {
-        return number;
-    }
-    public void setNumber(int number) {
-        this.number = number;
-    }
 
     public boolean isLeft() {
         return left;
     }
+
     public boolean isRight() {
         return right;
     }
@@ -54,13 +52,47 @@ public class Sector {
     public boolean isUp() {
         return up;
     }
+
     public boolean isDown() {
         return down;
     }
 
+    public Line getLeftLine() {
+        return leftLine;
+    }
+
+    public void setLeftLine(Line leftLine, int type) {
+        this.leftLine = Drawing.typeLine(leftLine, type);
+    }
+
+    public Line getRightLine() {
+        return rightLine;
+    }
+
+    public void setRightLine(Line rightLine, int type) {
+        this.rightLine = Drawing.typeLine(rightLine, type);
+    }
+
+    public Line getUpLine() {
+        return upLine;
+    }
+
+    public void setUpLine(Line upLine, int type) {
+        this.upLine = Drawing.typeLine(upLine, type);
+    }
+
+    public Line getDownLine() {
+        return downLine;
+    }
+
+    public void setDownLine(Line downLine, int type) {
+        this.downLine = Drawing.typeLine(downLine, type);
+    }
+
+
     @Override
     public String toString() {
-        StringBuilder s=new StringBuilder();
+        StringBuilder s = new StringBuilder();
         if ((left)) {
             s.append("T");
         } else {
@@ -84,6 +116,6 @@ public class Sector {
         } else {
             s.append("F");
         }
-        return s.toString()+" "+number;
+        return s.toString();
     }
 }

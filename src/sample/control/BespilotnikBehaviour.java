@@ -4,6 +4,7 @@ import javafx.scene.paint.Color;
 import sample.model.*;
 import javafx.concurrent.Task;
 import javafx.geometry.Side;
+import sample.view.Drawing;
 
 
 public class BespilotnikBehaviour extends Task {
@@ -34,7 +35,8 @@ public class BespilotnikBehaviour extends Task {
 
 
     @Override
-    protected Object call() throws Exception  {
+    protected Object call() {
+        try {
             synchronized (_besp) {
                 while (_besp.getScene().getWindow().isShowing()) {
                     labyrinth = _besp.getLabyrinth();
@@ -58,6 +60,7 @@ public class BespilotnikBehaviour extends Task {
                             allowRight = !besp.getLabyrinth().getSector(besp.getY(), besp.getX()).isRight();
 
                             sector = besp.getLabyrinth().getSector(besp.getY(), besp.getX()); // gets sector before moving
+
                             besp.setPreviousCentreX(besp.getCenterX());
                             besp.setPreviousCentreY(besp.getCenterY());
                             besp.setPreviousX(besp.getX());
@@ -86,26 +89,25 @@ public class BespilotnikBehaviour extends Task {
 
                         } else if (!besp.isOperated()) {
 
-                                besp.setPreviousCentreX(besp.getCenterX());
-                                besp.setCenterX(besp.getLeadBesp().getPreviousCentreX());
+                            besp.setPreviousCentreX(besp.getCenterX());
+                            besp.setCenterX(besp.getLeadBesp().getPreviousCentreX());
 
-                                besp.setPreviousCentreY(besp.getCenterY());
-                                besp.setCenterY(besp.getLeadBesp().getPreviousCentreY());
+                            besp.setPreviousCentreY(besp.getCenterY());
+                            besp.setCenterY(besp.getLeadBesp().getPreviousCentreY());
 
-                                besp.setPreviousX(besp.getX());
-                                besp.setX(besp.getLeadBesp().getPreviousX());
+                            besp.setPreviousX(besp.getX());
+                            besp.setX(besp.getLeadBesp().getPreviousX());
 
-                                besp.setPreviousY(besp.getY());
-                                besp.setY(besp.getLeadBesp().getPreviousY());
+                            besp.setPreviousY(besp.getY());
+                            besp.setY(besp.getLeadBesp().getPreviousY());
                         }
 
 
                         besp.setCurrentSector(labyrinth.getSector(besp.getY(), besp.getX())); // gets sector after moving
-
+                        Drawing.skyLine(labyrinth, besp.getY(), besp.getX());
 
                         if (besp.isFirstStep())
                             besp.setFirstStep(false);
-
 
 
                         besp.setFill((besp.getCurrentSector() == besp.getFinish()) ? Color.RED :
@@ -115,8 +117,12 @@ public class BespilotnikBehaviour extends Task {
                         Thread.sleep(50);
                     }
                 }
-                return null;
+
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void moveToSide(Side side) {
