@@ -94,7 +94,7 @@ public class Controller extends Task {
                             b.setCurrentSector(labyrinth.getSector(b.getY(), b.getX()));
                             paintBespilotnik(b);
                         }
-                        
+
                         finishVerifiening(besp);
                         paintBespilotnik(besp);
                     }

@@ -260,7 +260,6 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
      * Handling the pressing on directing buttons (up, down, left, right on the keyboard)
      * Firstly it is checking object on having a behaviour, than it points bespilotnik on nessesary direction
      * and notifies it to move there
-     * @param event
      */
     @Override
     public void handle(KeyEvent event) {
@@ -280,13 +279,6 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
                     case RIGHT:
                         behave.moveToSide(Side.RIGHT);
                         break;
-                    default:
-                        behave.moveToSide(null);
-                        break;
-                }
-            /*}
-            else if(this.getOperator() == Operator.SECOND) {
-                switch (event.getCode()) {
                     case W:
                         behave.moveToSide(Side.TOP);
                         break;
@@ -304,11 +296,10 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
                         break;
 
                 }
-            }*/
-            if(!this.isFirstStep())
-                notify();
+
+            notify();
+            }
         }
-    }
 
     @Override
     public String toString() {
