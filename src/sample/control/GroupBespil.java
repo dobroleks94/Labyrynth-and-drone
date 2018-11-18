@@ -3,16 +3,22 @@ package sample.control;
 import sample.model.Bespilotnik;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class GroupBespil {
-    private static List<Bespilotnik> group = new ArrayList<>();
+public class GroupBespil implements Iterable<Bespilotnik>{
+    private List<Bespilotnik> group = new ArrayList<>();
 
 
-    public static void addToGroup(Bespilotnik besp){
+    public void addToGroup(Bespilotnik besp){
         group.add(besp);
     }
-    public static List<Bespilotnik> getGroup() {
+    public List<Bespilotnik> getGroup() {
         return group;
+    }
+
+    @Override
+    public Iterator<Bespilotnik> iterator() {
+        return group.iterator();
     }
 }

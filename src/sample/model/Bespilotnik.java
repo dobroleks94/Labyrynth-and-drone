@@ -13,8 +13,49 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
     private static int name = 1;
     private int n ;
 
-    public Bespilotnik(double xCentre, double yCentre, double horizSize, double vertSize, Labyrinth lab) {
+    private Paint color;
+
+    private static Sector start;
+    private static Sector finish;
+    private Sector currentSector;
+
+    private Labyrinth labyrinth;
+    private Controller behave;
+
+    private int X;
+    private int Y;
+    double previousCentreX;
+    double previousCentreY;
+    int previousX;
+    int previousY;
+
+    private boolean isOperated;
+    private Operator operator;
+
+    private Bespilotnik main; //previous bespilotnik, which leads this one
+    private GroupBespil group;
+    private Bespilotnik leadBesp; //previous bespilotnik, which leads this one
+    private Bespilotnik child; //  leadBesp follower
+    private boolean firstStep = true;
+    private boolean isOnFinish;
+    private boolean canMove;
+
+
+    public Bespilotnik getMain() {
+        return main;
+    }
+    public void setMain(Bespilotnik main) {
+        this.main = main;
+    }
+
+    public GroupBespil getGroup() {
+        return group;
+    }
+
+    public Bespilotnik(double xCentre, double yCentre, double horizSize, double vertSize, Labyrinth lab, Operator operator) {
         super(xCentre, yCentre, horizSize, vertSize);
+        setMain(this);
+        this.operator = operator;
         color = Color.BLACK;
         setLabyrinth(lab);
         /**
@@ -33,13 +74,14 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
         setX(lab.getStartX());
         setY(lab.getStartY());
         isOperated = true;
-        GroupBespil.addToGroup(this);
+        group = new GroupBespil();
         n = name;
         name++;
     }
     public Bespilotnik(Bespilotnik bespilotnik){
 
         setLeadBesp(bespilotnik);
+        setMain(getLeadBesp().getMain());
 
         setRadiusX(getLeadBesp().getRadiusX());
         setRadiusY(getLeadBesp().getRadiusY());
@@ -53,34 +95,15 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
 
         bespilotnik.setChild(this);
 
-        GroupBespil.addToGroup(this);
+        getMain().getGroup().addToGroup(this);
         n = name;
         name++;
     }
 
-    private Paint color;
 
-    private static Sector start;
-    private static Sector finish;
-    private Sector currentSector;
-
-    private Labyrinth labyrinth;
-    private Controller behave;
-
-    private int X;
-    private int Y;
-    double previousCentreX;
-    double previousCentreY;
-    int previousX;
-    int previousY;
-
-    private boolean isOperated;
-
-    private Bespilotnik leadBesp; //previous bespilotnik, which leads this one
-    private Bespilotnik child; //  leadBesp follower
-    private boolean firstStep = true;
-    private boolean isOnFinish;
-    private boolean canMove;
+    public Operator getOperator() {
+        return operator;
+    }
 
     public boolean isCanMove() {
         return canMove;
@@ -243,21 +266,47 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
     public void handle(KeyEvent event) {
         synchronized (this) {
             checkBehaviour();
-            switch (event.getCode()) {
-                case UP:
-                    behave.moveToSide(Side.TOP);
-                    break;
-                case DOWN:
-                    behave.moveToSide(Side.BOTTOM);
-                    break;
-                case LEFT:
-                    behave.moveToSide(Side.LEFT);
-                    break;
-                case RIGHT:
-                    behave.moveToSide(Side.RIGHT);
-                    break;
-            }
-            notify();
+//            if(this.getOperator() == Operator.FIRST) {
+                switch (event.getCode()) {
+                    case UP:
+                        behave.moveToSide(Side.TOP);
+                        break;
+                    case DOWN:
+                        behave.moveToSide(Side.BOTTOM);
+                        break;
+                    case LEFT:
+                        behave.moveToSide(Side.LEFT);
+                        break;
+                    case RIGHT:
+                        behave.moveToSide(Side.RIGHT);
+                        break;
+                    default:
+                        behave.moveToSide(null);
+                        break;
+                }
+            /*}
+            else if(this.getOperator() == Operator.SECOND) {
+                switch (event.getCode()) {
+                    case W:
+                        behave.moveToSide(Side.TOP);
+                        break;
+                    case S:
+                        behave.moveToSide(Side.BOTTOM);
+                        break;
+                    case A:
+                        behave.moveToSide(Side.LEFT);
+                        break;
+                    case D:
+                        behave.moveToSide(Side.RIGHT);
+                        break;
+                    default:
+                        behave.moveToSide(null);
+                        break;
+
+                }
+            }*/
+            if(!this.isFirstStep())
+                notify();
         }
     }
 

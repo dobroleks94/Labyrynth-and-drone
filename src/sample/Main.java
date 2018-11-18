@@ -6,6 +6,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import sample.model.Bespilotnik;
 import sample.model.Labyrinth;
+import sample.model.Operator;
 import sample.view.Drawing;
 
 public class Main extends Application {
@@ -24,7 +25,7 @@ public class Main extends Application {
         Drawing.drawLabyrinth(root, lab);
 
 
-        Bespilotnik  bespilotnik = new Bespilotnik(Bespilotnik.getCentre()[0], Bespilotnik.getCentre()[1], 12, 12, lab);
+        Bespilotnik  bespilotnik = new Bespilotnik(Bespilotnik.getCentre()[0], Bespilotnik.getCentre()[1], 12, 12, lab, Operator.FIRST);
         root.getChildren().add(bespilotnik);
 
         Bespilotnik  bespilotnik2 = new Bespilotnik(bespilotnik);
@@ -35,22 +36,23 @@ public class Main extends Application {
 
         Bespilotnik  bespilotnik4 = new Bespilotnik(bespilotnik3);
         root.getChildren().add(bespilotnik4);
-        Bespilotnik  bespilotnik5 = new Bespilotnik(bespilotnik4);
-        root.getChildren().add(bespilotnik5);
 
-        Bespilotnik  bespilotnik6 = new Bespilotnik(bespilotnik5);
-        root.getChildren().add(bespilotnik6);
+//        Bespilotnik  bespilotnik5 = new Bespilotnik(bespilotnik4);
+//        root.getChildren().add(bespilotnik5);
+//        Bespilotnik  bespilotnik6 = new Bespilotnik(bespilotnik5);
+//        root.getChildren().add(bespilotnik6);
+//
+//        Bespilotnik  bespilotnik7 = new Bespilotnik(bespilotnik6);
+//        root.getChildren().add(bespilotnik7);
+//        Bespilotnik  bespilotnik8 = new Bespilotnik(bespilotnik7);
+//        root.getChildren().add(bespilotnik8);
+//
+//        Bespilotnik  bespilotnik9 = new Bespilotnik(bespilotnik8);
+//        root.getChildren().add(bespilotnik9);
 
-        Bespilotnik  bespilotnik7 = new Bespilotnik(bespilotnik6);
-        root.getChildren().add(bespilotnik7);
-        Bespilotnik  bespilotnik8 = new Bespilotnik(bespilotnik7);
-        root.getChildren().add(bespilotnik8);
+        /*Bespilotnik  bespilotnik4 =  new Bespilotnik(Bespilotnik.getCentre()[0], Bespilotnik.getCentre()[1], 12, 12, lab, Operator.SECOND);
+        root.getChildren().add(bespilotnik4);*/
 
-        Bespilotnik  bespilotnik9 = new Bespilotnik(bespilotnik8);
-        root.getChildren().add(bespilotnik9);
-
-        Bespilotnik  bespilotnik10 = new Bespilotnik(bespilotnik9);
-        root.getChildren().add(bespilotnik10);
 
         System.out.println(lab.getFinX() + " " + lab.getFinY());
 

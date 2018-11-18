@@ -69,6 +69,7 @@ public class Drawing {
             }
         }
         drawStart(root, lab);
+        //drawFin(lab);
         Bespilotnik.setFinish(lab.getSector(lab.getFinY(), lab.getFinX()));
         root.getChildren().addAll(lines);
     }
@@ -127,6 +128,7 @@ public class Drawing {
             lab.setFinishWall("B");
             lab.getSector(lab.getFinY(),lab.getFinX()).setDown(false);
         }
+        //Bespilotnik.setFinish(lab.getSector(lab.getFinY(), lab.getFinX()));
     }
 
     public static Line typeLine(Line line, int type) {
