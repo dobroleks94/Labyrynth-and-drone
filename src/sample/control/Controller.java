@@ -26,12 +26,6 @@ public class Controller extends Task {
     private int moveRightLeft;
     private int moveUpDown;
 
-    private boolean isNotEdgeX;
-    private boolean isNotEdgeY;
-    private boolean allowRight;
-    private boolean allowLeft;
-    private boolean allowUp;
-    private boolean allowDown;
     Labyrinth labyrinth;
 
 
@@ -46,29 +40,15 @@ public class Controller extends Task {
                     if (!besp.isFirstStep())
                         besp.wait(); //waiting for allowing to move
 
-                    moveRightLeft = besp.getX() + (positiveDirection ? 1 : -1); //sets labyrint coordinates while moving
-                    moveUpDown = besp.getY() + (positiveDirection ? 1 : -1);
-
-                    isNotEdgeX = moveRightLeft < besp.getLabyrinth().getSizeX() && moveRightLeft >= 0; //verify the end of labyrint
-                    isNotEdgeY = moveUpDown < besp.getLabyrinth().getSizeY() && moveUpDown >= 0; // the same
-
-                    /**
-                     * Verifies available directions, reacted on walls
-                     */
-                    allowDown = !besp.getLabyrinth().getSector(besp.getY(), besp.getX()).isDown();
-                    allowUp = !besp.getLabyrinth().getSector(besp.getY(), besp.getX()).isUp();
-                    allowLeft = !besp.getLabyrinth().getSector(besp.getY(), besp.getX()).isLeft();
-                    allowRight = !besp.getLabyrinth().getSector(besp.getY(), besp.getX()).isRight();
-
                     sector = besp.getLabyrinth().getSector(besp.getY(), besp.getX()); // gets sector before moving
 
-                    besp.setPreviousCentreX(besp.getCenterX());
+                    /*besp.setPreviousCentreX(besp.getCenterX());
                     besp.setPreviousCentreY(besp.getCenterY());
                     besp.setPreviousX(besp.getX());
-                    besp.setPreviousY(besp.getY());
+                    besp.setPreviousY(besp.getY());*/
 
                     if (!besp.isOnFinish()) {
-                        doStep(besp, verticalSize, positiveDirection, isNotEdgeX, isNotEdgeY, allowDown, allowLeft, allowRight, allowUp);
+                        doStep(besp, verticalSize, positiveDirection);
                         if (besp.getChild() != null)
                             if (!besp.getChild().isCanMove())
                                 besp.getChild().setCanMove(true);
@@ -80,9 +60,9 @@ public class Controller extends Task {
                     besp.setCurrentSector(labyrinth.getSector(besp.getY(), besp.getX())); // gets sector after moving
                     Drawing.skyLine(labyrinth, besp.getY(), besp.getX());
 
-                    for (Bespilotnik b : besp.getGroup()) {
+                    /*for (Bespilotnik b : besp.getGroup()) {
                         if (!b.isOnFinish() && b.isCanMove()) {
-                            //Thread.sleep(50);
+
                             if (b.getLeadBesp().getCenterX() != b.getLeadBesp().getPreviousCentreX()
                                     || b.getLeadBesp().getCenterY() != b.getLeadBesp().getPreviousCentreY()) {
                                 settingCenterCoordinates(b);
@@ -95,9 +75,10 @@ public class Controller extends Task {
                             paintBespilotnik(b);
                         }
 
-                        finishVerifiening(besp);
-                        paintBespilotnik(besp);
-                    }
+                    }*/
+
+                    finishVerifiening(besp);
+                    paintBespilotnik(besp);
 
                 }
             }
@@ -108,24 +89,27 @@ public class Controller extends Task {
     }
 
 
-
+    /**
+     *  defines if side, where Bespilotnik moves in Labyrinth, is vertical
+     *  and sets TRUE (moves on right or on left) of FALSE (in top or bottom)
+     *  Then defines positive direction
+     *   if pressed button (side) is Side.TOP, for example, positiveDirection will be false
+     */
     public void moveToSide(Side side) {
-            verticalSize = side.isVertical(); // defines if side, where Bespilotnik moves in Labyrinth, is vertical
-            // and sets TRUE (moves on right or on left) of FALSE (in top or bottom)
-            positiveDirection = side == (verticalSize ? Side.RIGHT : Side.BOTTOM); // defines positive direction
-            //if pressed button (side) is Side.TOP, for example, positiveDirection will be false
+        verticalSize = side.isVertical();
+        positiveDirection = side == (verticalSize ? Side.RIGHT : Side.BOTTOM);
     }
 
     private void finishVerifiening (Bespilotnik besp){
         if (besp.getCurrentSector() == besp.getFinish()) {
             besp.setOnFinish(true);
-            for (Bespilotnik bespilotnik : besp.getGroup())
+            /*for (Bespilotnik bespilotnik : besp.getGroup())
                 if (!bespilotnik.isOnFinish()) {
                     bespilotnik.setCenterX(bespilotnik.getLeadBesp().getCenterX());
                     bespilotnik.setCenterY(bespilotnik.getLeadBesp().getCenterY());
                     bespilotnik.setX(bespilotnik.getLeadBesp().getX());
                     bespilotnik.setY(bespilotnik.getLeadBesp().getY());
-                }
+                }*/
         }
     }
     private void paintBespilotnik(Bespilotnik besp){
@@ -133,7 +117,25 @@ public class Controller extends Task {
                 (besp.getCurrentSector() == besp.getStart()) ? Color.BLUE
                         : besp.ownColor());
     }
-    private void settingCenterCoordinates(Bespilotnik b) {
+
+    private void doStep(Bespilotnik besp, boolean verticalSize, boolean positiveDirection) {
+        if (verticalSize) {
+            besp.setCenterX(besp.getCenterX() + (positiveDirection ?
+                    (!besp.getCurrentSector().isRight()) ? step : 0 :
+                    (!besp.getCurrentSector().isLeft()) ? -step : 0));
+            besp.setX(besp.getX() + (positiveDirection ?
+                    (!besp.getCurrentSector().isRight()) ? 1 : 0 :
+                    (!besp.getCurrentSector().isLeft()) ? -1 : 0));
+        } else {
+            besp.setCenterY(besp.getCenterY() + (positiveDirection ?
+                    (!besp.getCurrentSector().isDown()) ? step : 0 :
+                    (!besp.getCurrentSector().isUp()) ? -step : 0));
+            besp.setY(besp.getY() + (positiveDirection ?
+                    (!besp.getCurrentSector().isDown()) ? 1 : 0 :
+                    (!besp.getCurrentSector().isUp()) ? -1 : 0));
+        }
+    }
+   /* private void settingCenterCoordinates(Bespilotnik b) {
         b.setPreviousCentreX(b.getCenterX());
         b.setCenterX(b.getLeadBesp().getPreviousCentreX());
 
@@ -145,26 +147,5 @@ public class Controller extends Task {
 
         b.setPreviousY(b.getY());
         b.setY(b.getLeadBesp().getPreviousY());
-    }
-    private void doStep(Bespilotnik besp, boolean verticalSize, boolean positiveDirection, boolean isNotEdgeX, boolean isNotEdgeY, boolean allowDown, boolean allowLeft, boolean allowRight, boolean allowUp) {
-        if (verticalSize) {
-            if (isNotEdgeX) {
-                besp.setCenterX(besp.getCenterX() + (positiveDirection ?
-                        (allowRight) ? step : 0 :
-                        (allowLeft) ? -step : 0));
-                besp.setX(besp.getX() + (positiveDirection ?
-                        (allowRight) ? 1 : 0 :
-                        (allowLeft) ? -1 : 0));
-            }
-        } else {
-            if (isNotEdgeY) {
-                besp.setCenterY(besp.getCenterY() + (positiveDirection ?
-                        (allowDown) ? step : 0 :
-                        (allowUp) ? -step : 0));
-                besp.setY(besp.getY() + (positiveDirection ?
-                        (allowDown) ? 1 : 0 :
-                        (allowUp) ? -1 : 0));
-            }
-        }
-    }
+    }*/
 }

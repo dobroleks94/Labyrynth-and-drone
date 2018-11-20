@@ -52,15 +52,12 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
         return group;
     }
 
-    public Bespilotnik(double xCentre, double yCentre, double horizSize, double vertSize, Labyrinth lab, Operator operator) {
+    public Bespilotnik(double xCentre, double yCentre, double horizSize, double vertSize, Labyrinth lab) {
         super(xCentre, yCentre, horizSize, vertSize);
-        setMain(this);
-        this.operator = operator;
+        //setMain(this);
         color = Color.BLACK;
         setLabyrinth(lab);
-        /**
-         * Defines the start sector coordinates and sets start point for Bespilotnik
-         */
+
         setCenterX(getCenterX() + (Labyrinth.getStartWall().equals("L") ? 15 :
                 Labyrinth.getStartWall().equals("R") ? -15 :
                         0 ));
@@ -68,13 +65,12 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
                 Labyrinth.getStartWall().equals("B") ? -15 :
                         0 ));
 
-        /**
-         * Sets for Bespilotnik start coordinates of Labyrinth
-         */
         setX(lab.getStartX());
         setY(lab.getStartY());
+        setCurrentSector(lab.getSector(getY(), getX()));
+
         isOperated = true;
-        group = new GroupBespil();
+        //group = new GroupBespil();
         n = name;
         name++;
     }
@@ -95,14 +91,9 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
 
         bespilotnik.setChild(this);
 
-        getMain().getGroup().addToGroup(this);
+        //getMain().getGroup().addToGroup(this);
         n = name;
         name++;
-    }
-
-
-    public Operator getOperator() {
-        return operator;
     }
 
     public boolean isCanMove() {
@@ -266,40 +257,40 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
         synchronized (this) {
             checkBehaviour();
 //            if(this.getOperator() == Operator.FIRST) {
-                switch (event.getCode()) {
-                    case UP:
-                        behave.moveToSide(Side.TOP);
-                        break;
-                    case DOWN:
-                        behave.moveToSide(Side.BOTTOM);
-                        break;
-                    case LEFT:
-                        behave.moveToSide(Side.LEFT);
-                        break;
-                    case RIGHT:
-                        behave.moveToSide(Side.RIGHT);
-                        break;
-                    case W:
-                        behave.moveToSide(Side.TOP);
-                        break;
-                    case S:
-                        behave.moveToSide(Side.BOTTOM);
-                        break;
-                    case A:
-                        behave.moveToSide(Side.LEFT);
-                        break;
-                    case D:
-                        behave.moveToSide(Side.RIGHT);
-                        break;
-                    default:
-                        behave.moveToSide(null);
-                        break;
+            switch (event.getCode()) {
+                case UP:
+                    behave.moveToSide(Side.TOP);
+                    break;
+                case DOWN:
+                    behave.moveToSide(Side.BOTTOM);
+                    break;
+                case LEFT:
+                    behave.moveToSide(Side.LEFT);
+                    break;
+                case RIGHT:
+                    behave.moveToSide(Side.RIGHT);
+                    break;
+                case W:
+                    behave.moveToSide(Side.TOP);
+                    break;
+                case S:
+                    behave.moveToSide(Side.BOTTOM);
+                    break;
+                case A:
+                    behave.moveToSide(Side.LEFT);
+                    break;
+                case D:
+                    behave.moveToSide(Side.RIGHT);
+                    break;
+                default:
+                    behave.moveToSide(null);
+                    break;
 
-                }
+            }
 
             notify();
-            }
         }
+    }
 
     @Override
     public String toString() {

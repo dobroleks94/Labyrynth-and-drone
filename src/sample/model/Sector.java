@@ -24,7 +24,6 @@ public class Sector {
     public void setLeft(boolean left) {
         this.left = left;
     }
-
     public void setRight(boolean right) {
         this.right = right;
     }
@@ -32,16 +31,13 @@ public class Sector {
     public void setUp(boolean up) {
         this.up = up;
     }
-
     public void setDown(boolean down) {
         this.down = down;
     }
 
-
     public boolean isLeft() {
         return left;
     }
-
     public boolean isRight() {
         return right;
     }
@@ -49,7 +45,6 @@ public class Sector {
     public boolean isUp() {
         return up;
     }
-
     public boolean isDown() {
         return down;
     }
@@ -57,7 +52,6 @@ public class Sector {
     public Line getLeftLine() {
         return leftLine;
     }
-
     public void setLeftLine(Line leftLine, int type) {
         this.leftLine = Drawing.typeLine(leftLine, type);
     }
@@ -65,7 +59,6 @@ public class Sector {
     public Line getRightLine() {
         return rightLine;
     }
-
     public void setRightLine(Line rightLine, int type) {
         this.rightLine = Drawing.typeLine(rightLine, type);
     }
@@ -73,7 +66,6 @@ public class Sector {
     public Line getUpLine() {
         return upLine;
     }
-
     public void setUpLine(Line upLine, int type) {
         this.upLine = Drawing.typeLine(upLine, type);
     }
@@ -81,7 +73,6 @@ public class Sector {
     public Line getDownLine() {
         return downLine;
     }
-
     public void setDownLine(Line downLine, int type) {
         this.downLine = Drawing.typeLine(downLine, type);
     }
