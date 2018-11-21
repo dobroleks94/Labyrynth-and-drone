@@ -134,6 +134,7 @@ public class Controller extends Task {
                     (!besp.getCurrentSector().isDown()) ? 1 : 0 :
                     (!besp.getCurrentSector().isUp()) ? -1 : 0));
         }
+        System.out.println(besp.getCurrentSector().getCells().length*besp.getCurrentSector().getCells()[0].length);
     }
    /* private void settingCenterCoordinates(Bespilotnik b) {
         b.setPreviousCentreX(b.getCenterX());

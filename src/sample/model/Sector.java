@@ -4,21 +4,37 @@ import javafx.scene.shape.Line;
 import sample.view.Drawing;
 
 public class Sector {
-    private boolean left;//Наличие стенок с определенной стороны
-    private boolean right;
-    private boolean up;
-    private boolean down;
+    private boolean left=false;//Наличие стенок с определенной стороны
+    private boolean right=false;
+    private boolean up=false;
+    private boolean down=false;
 
     private Line leftLine;
     private Line rightLine;
     private Line upLine;
     private Line downLine;
 
+    private Cell[][]cells;
+
     public Sector(boolean left, boolean right, boolean up, boolean down) {
         this.left = left;
         this.right = right;
         this.up = up;
         this.down = down;
+        cells=new Cell[Labyrinth.getCountCells()][Labyrinth.getCountCells()];
+    }
+    public Sector(){}
+    public Cell[][] getCells() {
+        return cells;
+    }
+
+    public void setCells(Cell[][] cells) {
+        this.cells = cells;
+    }
+
+    public void setCell(Cell cell,int y,int x){
+        if(cells[y][x]==null)
+            cells[y][x]=cell;
     }
 
     public void setLeft(boolean left) {

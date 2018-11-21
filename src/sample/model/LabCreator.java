@@ -114,4 +114,66 @@ public class LabCreator {
             }
         }
     }
+
+    public static void fillCells(Labyrinth lab) {
+        Sector[][] sectors = lab.getSectors();
+        for (int y = 0; y < sectors.length; y++) {
+            for (int x = 0; x < sectors[y].length; x++) {
+                for (int yc = 0; yc < sectors[y][x].getCells().length; yc++) {
+                    for (int xc = 0; xc < sectors[y][x].getCells()[yc].length; xc++) {
+                        sectors[y][x].setCell(new Cell(), yc, xc);
+                        if (sectors[y][x].isUp()&&yc==0){
+                            sectors[y][x].getCells()[yc][xc].setUp(true);
+                        }
+                        if (sectors[y][x].isRight()&&xc==Labyrinth.getCountCells()-1){
+                            sectors[y][x].getCells()[yc][xc].setRight(true);
+                        }
+                        if (sectors[y][x].isDown()&&yc==Labyrinth.getCountCells()-1){
+                            sectors[y][x].getCells()[yc][xc].setDown(true);
+                        }
+                        if (sectors[y][x].isLeft()&&xc==0){
+                            sectors[y][x].getCells()[yc][xc].setLeft(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static void setWalls(Labyrinth lab) {
+        Sector[][] sectors = lab.getSectors();
+        for (int y = 0; y < sectors.length; y++) {
+            for (int x = 0; x < sectors[y].length; x++) {
+
+                if (x == 0)
+                    sectors[y][x].setLeft(true);
+                else if (!sectors[y][x].isLeft() || !sectors[y][x - 1].isRight()) {
+                    sectors[y][x].setLeft(false);
+                    sectors[y][x - 1].setRight(false);
+                }
+
+                if (x == sectors[y].length - 1)
+                    sectors[y][x].setRight(true);
+                else if (!sectors[y][x].isRight() || !sectors[y][x + 1].isLeft()) {
+                    sectors[y][x].setRight(false);
+                    sectors[y][x + 1].setLeft(false);
+                }
+
+                if (y == 0) {
+                    sectors[y][x].setUp(true);
+                } else if (!sectors[y][x].isUp() || !sectors[y - 1][x].isDown()) {
+                    sectors[y][x].setUp(false);
+                    sectors[y - 1][x].setDown(false);
+                }
+
+                if (y == sectors.length - 1)
+                    sectors[y][x].setDown(true);
+                else if (!sectors[y][x].isDown() || !sectors[y + 1][x].isUp()) {
+                    sectors[y][x].setDown(false);
+                    sectors[y + 1][x].setUp(false);
+                }
+
+            }
+        }
+    }
 }

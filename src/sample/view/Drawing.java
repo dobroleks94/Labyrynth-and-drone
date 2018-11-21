@@ -15,56 +15,28 @@ public class Drawing {
 
     public static void drawLabyrinth(AnchorPane root, Labyrinth lab) { //Отображение всех секторов лабиринта
         Sector[][] sectors = lab.getSectors();
-        HashSet<Line> lines=new HashSet<>();
+        HashSet<Line> lines = new HashSet<>();
         for (int y = 0; y < sectors.length; y++) {
             for (int x = 0; x < sectors[y].length; x++) {
 
-                if (x == 0) {
-                    sectors[y][x].setLeftLine(setLine(otstup, otstup, otstup, length, x, y),3);
-                    lines.add(sectors[y][x].getLeftLine()); //ЛЕВАЯ СТЕНКА
-                    sectors[y][x].setLeft(true);
-                } else if (sectors[y][x].isLeft() && sectors[y][x - 1].isRight()) {
-                    sectors[y][x].setLeftLine(setLine(otstup, otstup, otstup, length, x, y),0);
-                    lines.add(sectors[y][x].getLeftLine()); //ЛЕВАЯ СТЕНКА
-                } else {
-                    sectors[y][x].setLeft(false);
-                    sectors[y][x - 1].setRight(false);
+                if (sectors[y][x].isLeft()) {
+                    sectors[y][x].setLeftLine(setLine(otstup, otstup, otstup, length, x, y), 0);  //ЛЕВАЯ СТЕНКА
+                    lines.add(sectors[y][x].getLeftLine());
                 }
 
-                if (x == sectors[y].length - 1) {
-                    sectors[y][x].setRightLine(setLine(length, otstup, length, length, x, y),3);
-                    lines.add(sectors[y][x].getRightLine()); //ПРАВАЯ СТЕНКА
-                    sectors[y][x].setRight(true);
-                } else if (sectors[y][x].isRight() && sectors[y][x + 1].isLeft()) {
-                    sectors[y][x].setRightLine(setLine(length, otstup, length, length, x, y),0);
-                    lines.add(sectors[y][x].getRightLine()); //ПРАВАЯ СТЕНКА
-                } else {
-                    sectors[y][x].setRight(false);
-                    sectors[y][x + 1].setLeft(false);
+                if (sectors[y][x].isRight()) {
+                    sectors[y][x].setRightLine(setLine(length, otstup, length, length, x, y), 0); //ПРАВАЯ СТЕНКА
+                    lines.add(sectors[y][x].getRightLine());
                 }
 
-                if (y == 0) {
-                    sectors[y][x].setUpLine(setLine(otstup, otstup, length, otstup, x, y),3); //ВЕРХНЯЯ СТЕНКА
+                if (sectors[y][x].isUp()) {
+                    sectors[y][x].setUpLine(setLine(otstup, otstup, length, otstup, x, y), 0); //ВЕРХНЯЯ СТЕНКА
                     lines.add(sectors[y][x].getUpLine());
-                    sectors[y][x].setUp(true);
-                } else if (sectors[y][x].isUp() && sectors[y - 1][x].isDown()) {
-                    sectors[y][x].setUpLine(setLine(otstup, otstup, length, otstup, x, y),0); //ВЕРХНЯЯ СТЕНКА
-                    lines.add(sectors[y][x].getUpLine());
-                } else {
-                    sectors[y][x].setUp(false);
-                    sectors[y - 1][x].setDown(false);
                 }
 
-                if (y == sectors.length - 1) {
-                    sectors[y][x].setDownLine(setLine(otstup, length, length, length, x, y),3); //НИЖНЯЯ СТЕНКА
+                if (sectors[y][x].isDown()) {
+                    sectors[y][x].setDownLine(setLine(otstup, length, length, length, x, y), 0); //НИЖНЯЯ СТЕНКА
                     lines.add(sectors[y][x].getDownLine());
-                    sectors[y][x].setDown(true);
-                } else if (sectors[y][x].isDown() && sectors[y + 1][x].isUp()) {
-                    sectors[y][x].setDownLine(setLine(otstup, length, length, length, x, y),0); //НИЖНЯЯ СТЕНКА
-                    lines.add(sectors[y][x].getDownLine());
-                } else {
-                    sectors[y][x].setDown(false);
-                    sectors[y + 1][x].setUp(false);
                 }
             }
         }
