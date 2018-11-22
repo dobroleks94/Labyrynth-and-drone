@@ -6,7 +6,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import sample.model.Bespilotnik;
 import sample.model.Labyrinth;
-import sample.model.Operator;
 import sample.view.Drawing;
 
 public class Main extends Application {
