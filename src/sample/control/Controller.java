@@ -137,6 +137,9 @@ public class Controller extends Task {
                 besp.setCenterX(besp.getCenterX() + (positiveDirection ?
                         (!besp.getCurrentSector().isRight()) ? besp.getStep() : 0 :
                         (!besp.getCurrentSector().isLeft()) ? -besp.getStep() : 0));
+
+                System.out.printf("[ %d ; %d ]\n", besp.getCellX(), besp.getCellY());
+                System.out.printf("[ %d ; %d ]\n\n", besp.getX(), besp.getY());
                 return;
             }
             besp.setCenterX(besp.getCenterX() + (positiveDirection ? besp.getStep() : -besp.getStep()));
@@ -156,12 +159,16 @@ public class Controller extends Task {
                 besp.setCenterY(besp.getCenterY() + (positiveDirection ?
                         (!besp.getCurrentSector().isDown()) ? besp.getStep() : 0 :
                         (!besp.getCurrentSector().isUp()) ? -besp.getStep() : 0));
+
+                System.out.printf("[ %d ; %d ]\n", besp.getCellX(), besp.getCellY());
+                System.out.printf("[ %d ; %d ]\n\n", besp.getX(), besp.getY());
                 return;
             }
             besp.setCenterY(besp.getCenterY() + (positiveDirection ? besp.getStep() : -besp.getStep()));
         }
 
-        System.out.printf("[ %d ; %d ]", besp.getCellX(), besp.getCellY());
+        System.out.printf("[ %d ; %d ]\n", besp.getCellX(), besp.getCellY());
+        System.out.printf("[ %d ; %d ]\n\n", besp.getX(), besp.getY());
     }
    /* private void settingCenterCoordinates(Bespilotnik b) {
         b.setPreviousCentreX(b.getCenterX());
