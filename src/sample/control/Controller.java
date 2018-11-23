@@ -11,7 +11,6 @@ import sample.view.Drawing;
 public class Controller extends Task {
     private boolean verticalSize = false;
     private boolean positiveDirection = false;
-    private double step = 30.0;
 
     private Bespilotnik besp;
 
@@ -42,6 +41,7 @@ public class Controller extends Task {
 
                     sector = besp.getLabyrinth().getSector(besp.getY(), besp.getX()); // gets sector before moving
 
+
                     /*besp.setPreviousCentreX(besp.getCenterX());
                     besp.setPreviousCentreY(besp.getCenterY());
                     besp.setPreviousX(besp.getX());
@@ -56,6 +56,7 @@ public class Controller extends Task {
 
                     if (besp.isFirstStep())
                         besp.setFirstStep(false);
+
 
                     besp.setCurrentSector(labyrinth.getSector(besp.getY(), besp.getX())); // gets sector after moving
                     Drawing.skyLine(labyrinth, besp.getY(), besp.getX());
@@ -120,21 +121,47 @@ public class Controller extends Task {
 
     private void doStep(Bespilotnik besp, boolean verticalSize, boolean positiveDirection) {
         if (verticalSize) {
-            besp.setCenterX(besp.getCenterX() + (positiveDirection ?
-                    (!besp.getCurrentSector().isRight()) ? step : 0 :
-                    (!besp.getCurrentSector().isLeft()) ? -step : 0));
-            besp.setX(besp.getX() + (positiveDirection ?
-                    (!besp.getCurrentSector().isRight()) ? 1 : 0 :
-                    (!besp.getCurrentSector().isLeft()) ? -1 : 0));
+
+            besp.setCellX(besp.getCellX() + (positiveDirection ? 1 : -1));
+
+            if(besp.getCellX()<0 || besp.getCellX() == labyrinth.getCountCells()) {
+
+                besp.setCellX(besp.getCellX() == labyrinth.getCountCells() ?
+                        positiveDirection && (!besp.getCurrentSector().isRight()) ?
+                            0 : labyrinth.getCountCells()-1 :
+                                (!besp.getCurrentSector().isLeft()) ? labyrinth.getCountCells()-1 : 0
+                        );
+                besp.setX(besp.getX() + (positiveDirection ?
+                        (!besp.getCurrentSector().isRight()) ? 1 : 0 :
+                        (!besp.getCurrentSector().isLeft()) ? -1 : 0));
+                besp.setCenterX(besp.getCenterX() + (positiveDirection ?
+                        (!besp.getCurrentSector().isRight()) ? besp.getStep() : 0 :
+                        (!besp.getCurrentSector().isLeft()) ? -besp.getStep() : 0));
+                return;
+            }
+            besp.setCenterX(besp.getCenterX() + (positiveDirection ? besp.getStep() : -besp.getStep()));
         } else {
-            besp.setCenterY(besp.getCenterY() + (positiveDirection ?
-                    (!besp.getCurrentSector().isDown()) ? step : 0 :
-                    (!besp.getCurrentSector().isUp()) ? -step : 0));
-            besp.setY(besp.getY() + (positiveDirection ?
-                    (!besp.getCurrentSector().isDown()) ? 1 : 0 :
-                    (!besp.getCurrentSector().isUp()) ? -1 : 0));
+            besp.setCellY(besp.getCellY() + (positiveDirection ? 1 : -1));
+
+            if(besp.getCellY()<0 || besp.getCellY() == labyrinth.getCountCells()) {
+
+                besp.setCellY(besp.getCellY() == labyrinth.getCountCells() ?
+                        positiveDirection && (!besp.getCurrentSector().isDown()) ?
+                                0 : labyrinth.getCountCells()-1 :
+                        (!besp.getCurrentSector().isUp()) ? labyrinth.getCountCells()-1 : 0
+                );
+                besp.setY(besp.getY() + (positiveDirection ?
+                        (!besp.getCurrentSector().isDown()) ? 1 : 0 :
+                        (!besp.getCurrentSector().isUp()) ? -1 : 0));
+                besp.setCenterY(besp.getCenterY() + (positiveDirection ?
+                        (!besp.getCurrentSector().isDown()) ? besp.getStep() : 0 :
+                        (!besp.getCurrentSector().isUp()) ? -besp.getStep() : 0));
+                return;
+            }
+            besp.setCenterY(besp.getCenterY() + (positiveDirection ? besp.getStep() : -besp.getStep()));
         }
-        System.out.println(besp.getCurrentSector().getCells().length*besp.getCurrentSector().getCells()[0].length);
+
+        System.out.printf("[ %d ; %d ]", besp.getCellX(), besp.getCellY());
     }
    /* private void settingCenterCoordinates(Bespilotnik b) {
         b.setPreviousCentreX(b.getCenterX());

@@ -27,7 +27,6 @@ public class Sector {
     public Cell[][] getCells() {
         return cells;
     }
-
     public void setCells(Cell[][] cells) {
         this.cells = cells;
     }
@@ -35,6 +34,9 @@ public class Sector {
     public void setCell(Cell cell,int y,int x){
         if(cells[y][x]==null)
             cells[y][x]=cell;
+    }
+    public Cell getCell(int y, int x){
+        return cells[y][x];
     }
 
     public void setLeft(boolean left) {

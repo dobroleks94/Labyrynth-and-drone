@@ -72,12 +72,11 @@ public class Drawing {
         start.setStroke(Color.BLUE);
         start.setStrokeWidth(4);
 
-        Bespilotnik.setStart(lab.getSector(lab.getStartY(), lab.getStartX()));
+        Bespilotnik.setStartLine(start); // start line
+        Bespilotnik.setStart(lab.getSector(lab.getStartY(), lab.getStartX())); // start sector
 
-        /**
-         * start line`s centre coordinates
-         */
-        Bespilotnik.setCentre(Bespilotnik.startCoordinates(start.getStartX(), start.getEndX(), start.getStartY(), start.getEndY()));
+        Bespilotnik.setStepLine(Bespilotnik.stepLineSize(start.getStartX(), start.getEndX(), start.getStartY(), start.getEndY())); // remote location size from start line
+        Bespilotnik.setCentre(Bespilotnik.startCoordinates(lab)); //coordinates for bespilotnik at start sector, including remoting, what is upper
 
         root.getChildren().add(start);
     }

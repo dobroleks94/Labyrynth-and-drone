@@ -1,6 +1,7 @@
 package sample.model;
 
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Line;
 import sample.control.*;
 import javafx.event.EventHandler;
 import javafx.geometry.Side;
@@ -18,12 +19,17 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
     private static Sector start;
     private static Sector finish;
     private Sector currentSector;
+    private static Cell startC;
+    private static Cell finishC;
+    private Cell currentCell;
 
     private Labyrinth labyrinth;
     private Controller behave;
 
     private int X;
     private int Y;
+    private int cellX;
+    private int cellY;
     double previousCentreX;
     double previousCentreY;
     int previousX;
@@ -39,14 +45,7 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
     private boolean firstStep = true;
     private boolean isOnFinish;
     private boolean canMove;
-
-
-    public Bespilotnik getMain() {
-        return main;
-    }
-    public void setMain(Bespilotnik main) {
-        this.main = main;
-    }
+    private static double step;
 
     public GroupBespil getGroup() {
         return group;
@@ -54,26 +53,42 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
 
     public Bespilotnik(double xCentre, double yCentre, double horizSize, double vertSize, Labyrinth lab) {
         super(xCentre, yCentre, horizSize, vertSize);
+        setStep(horizSize*2);
         //setMain(this);
         color = Color.BLACK;
         setLabyrinth(lab);
 
-        setCenterX(getCenterX() + (Labyrinth.getStartWall().equals("L") ? 15 :
-                Labyrinth.getStartWall().equals("R") ? -15 :
+        setCenterX(getCenterX() + (Labyrinth.getStartWall().equals("L") ? getStepLine() :
+                Labyrinth.getStartWall().equals("R") ? -getStepLine() :
                         0 ));
-        setCenterY(getCenterY() + (Labyrinth.getStartWall().equals("T") ? 15 :
-                Labyrinth.getStartWall().equals("B") ? -15 :
+        setCenterY(getCenterY() + (Labyrinth.getStartWall().equals("T") ? getStepLine() :
+                Labyrinth.getStartWall().equals("B") ? -getStepLine() :
                         0 ));
+
+        // sets center coordinates of operated bespilotnik (it always located at [0;0] position
+        if(Labyrinth.getStartWall().equals("R"))
+            setCenterX(getCenterX() - (getStepLine()*(double)lab.getCountCells()));
+        else if(Labyrinth.getStartWall().equals("B"))
+            setCenterY(getCenterY() - (getStepLine()*(double)lab.getCountCells()));
+        //*************************************************************************************
+
 
         setX(lab.getStartX());
         setY(lab.getStartY());
+        setCellX(0);
+        setCellY(0);
         setCurrentSector(lab.getSector(getY(), getX()));
+        setCurrentCell(getCurrentSector().getCell(getCellY(), getCellX()));
 
         isOperated = true;
         //group = new GroupBespil();
         n = name;
         name++;
     }
+
+
+
+
     public Bespilotnik(Bespilotnik bespilotnik){
 
         setLeadBesp(bespilotnik);
@@ -96,13 +111,176 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
         name++;
     }
 
+    public void setLabyrinth(Labyrinth labyrinth) {
+        this.labyrinth = labyrinth;
+    }
+    public Labyrinth getLabyrinth() {
+        return labyrinth;
+    }
+
+    public Paint ownColor() {
+        return color;
+    }
+
+    public Bespilotnik getMain() {
+        return main;
+    }
+    public void setMain(Bespilotnik main) {
+        this.main = main;
+    }
+
+    // defines opportunity of moving, sets and gets the value of bespilotnik`s step
+    // and verifies if bespilotnik has done first step
     public boolean isCanMove() {
         return canMove;
     }
     public void setCanMove(boolean canMove) {
         this.canMove = canMove;
     }
+    public static double getStep() {
+        return step;
+    }
+    public void setStep(double step) {
+        this.step = step;
+    }
+    //*****************************************************************************
 
+    public boolean isFirstStep() {
+        return firstStep;
+    }
+    public void setFirstStep(boolean firstStep) {
+        this.firstStep = firstStep;
+    }
+
+    //sets and gets current cell and sector, where bespilotnik is located **************
+    public Sector getCurrentSector() {
+        return currentSector;
+    }
+    public void setCurrentSector(Sector currentSector) {
+        this.currentSector = currentSector;
+    }
+    public Cell getCurrentCell() {
+        return currentCell;
+    }
+    public void setCurrentCell(Cell currentCell) {
+        this.currentCell = currentCell;
+    }
+    //**********************************************************************************
+
+
+    /**
+     * Coordinates of sector and cell in sector where Bespilotnik is
+     */
+    public int getX() {
+        return X;
+    }
+    public int getY() {
+        return Y;
+    }
+    public void setX(int x) {
+        X = x;
+    }
+    public void setY(int y) {
+        Y = y;
+    }
+    public int getCellX() {
+        return cellX;
+    }
+    public void setCellX(int cellX) {
+        this.cellX = cellX;
+    }
+    public int getCellY() {
+        return cellY;
+    }
+    public void setCellY(int cellY) {
+        this.cellY = cellY;
+    }
+
+    public int getPreviousCellX() {
+        return cellX;
+    }
+    public void setPreviousCellX(int cellX) {
+        this.cellX = cellX;
+    }
+    public int getPreviousCellY() {
+        return cellY;
+    }
+    public void setPreviousCellY(int cellY) {
+        this.cellY = cellY;
+    }
+    //*******************************************
+
+
+    // sets and gets start sector and cell *********************************************
+    public Sector getStart() {
+        return start;
+    }
+    public static void setStart(Sector start_) {
+        start = start_;
+    }
+    public static Cell getStartC() {
+        return startC;
+    }
+    public static void setStartC(Cell startC) {
+        Bespilotnik.startC = startC;
+    }
+    //**************************************************************************
+
+
+    /**
+     * looks for start line
+     * sets the location on start line where bespilotnik will be located
+     * location depends on count of cells in the sector
+     * operated bespilotnik is always located in the start cell [0;0] of start sector
+     */
+    private static Line startLine;
+    public static Line getStartLine() {
+        return startLine;
+    }
+    public static void setStartLine(Line startLine) {
+        Bespilotnik.startLine = startLine;
+    }
+
+    public static double stepLineSize(double x1, double x2, double y1, double y2){
+        double lineLength = Math.sqrt(Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2));
+        return lineLength/(Labyrinth.getCountCells()*2);
+    }
+    public static double[] startCoordinates(Labyrinth lab){
+        double x = getStartLine().getStartX() + ((Labyrinth.getStartWall().equals("B") || Labyrinth.getStartWall().equals("T"))
+                    ? getStepLine() : 0 );
+        double y = getStartLine().getStartY() + ((Labyrinth.getStartWall().equals("L") || Labyrinth.getStartWall().equals("R"))
+                    ? getStepLine() : 0 );
+        double []coordinates = { x, y};
+        return coordinates;
+    }
+    //************************************************************************************
+
+
+    // location of Bespilotnik on start sector + on start sector`s cell ******************
+    private static double[] centre;
+    public static void setCentre(double[] startCoordinates) {
+        centre = startCoordinates;
+    }
+    public static double[] getCentre() {
+        return centre;
+    }
+    private static double stepLine;
+    public static double getStepLine() {
+        return stepLine;
+    }
+    public static void setStepLine(double stepLine) {
+        Bespilotnik.stepLine = stepLine;
+    }
+    //*************************************************************************************
+
+
+
+    public Sector getFinish() {
+        return finish;
+    }
+    public static void setFinish(Sector fin) {
+        finish = fin;
+    }
     public boolean isOnFinish() {
         return isOnFinish;
     }
@@ -110,9 +288,7 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
         isOnFinish = onFinish;
     }
 
-    public Paint ownColor() {
-        return color;
-    }
+
 
     /**
      * Sets previous labyrint`s and field`s coordinates of leader Bespilotnik
@@ -144,19 +320,14 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
     }
     //****************************************************************************
 
-    public boolean isFirstStep() {
-        return firstStep;
-    }
-    public void setFirstStep(boolean firstStep) {
-        this.firstStep = firstStep;
-    }
 
-    public Sector getCurrentSector() {
-        return currentSector;
+    /**
+     * defines bespilotnik, which will be controlled by operator
+     */
+    public boolean isOperated() {
+        return isOperated;
     }
-    public void setCurrentSector(Sector currentSector) {
-        this.currentSector = currentSector;
-    }
+    //*******************************************************************************
 
     public Bespilotnik getLeadBesp() {
         return leadBesp;
@@ -168,71 +339,6 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
     }
     public Bespilotnik getChild() {
         return child;
-    }
-
-    /**
-     * defines bespilotnik, which will be controlled by operator
-     */
-    public boolean isOperated() {
-        return isOperated;
-    }
-    //*******************************************************************************
-
-    public Sector getStart() {
-        return start;
-    }
-    public static void setStart(Sector start_) {
-        start = start_;
-    }
-
-    public Sector getFinish() {
-        return finish;
-    }
-    public static void setFinish(Sector fin) {
-        finish = fin;
-    }
-
-    public void setLabyrinth(Labyrinth labyrinth) {
-        this.labyrinth = labyrinth;
-    }
-    public Labyrinth getLabyrinth() {
-        return labyrinth;
-    }
-
-    /**
-     * Coordinates of sector where Bespilotnik is
-     */
-    public int getX() {
-        return X;
-    }
-    public int getY() {
-        return Y;
-    }
-
-    public void setX(int x) {
-        X = x;
-    }
-    public void setY(int y) {
-        Y = y;
-    }
-
-    /**
-     * sets the centre of start line
-     * where our bespilotnik will be located
-     */
-    public static double[] startCoordinates(double x1, double x2, double y1, double y2){
-        double []coordinates = {
-                (x1+x2)/2,
-                (y1+y2)/2
-        };
-        return coordinates;
-    }
-    private static double[] centre;
-    public static void setCentre(double[] startCoordinates) {
-        centre = startCoordinates;
-    }
-    public static double[] getCentre() {
-        return centre;
     }
 
     /**

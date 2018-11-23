@@ -25,7 +25,6 @@ public class Labyrinth {
     public static int getCountCells() {
         return countCells;
     }
-
     public static void setCountCells(int countCells) {
         Labyrinth.countCells = countCells;
     }
@@ -47,15 +46,12 @@ public class Labyrinth {
     public void setFinishWall(String finishWalll) {
         finishWall = finishWalll;
     }
-
     public int getStartY() {
         return startY;
     }
-
     public void setStartY(int startY) {
         this.startY = startY;
     }
-
     public int getStartX() {
         return startX;
     }
