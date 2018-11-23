@@ -18,7 +18,7 @@ public class Main extends Application {
         AnchorPane root = new AnchorPane();
 
 
-        Labyrinth lab = new Labyrinth(20, 20,5);
+        Labyrinth lab = new Labyrinth(20, 20,4);
         Scene scene = new Scene(root, lab.getSizeX()*35, lab.getSizeY()*35);
         scene.setFill(null);
         Drawing.drawLabyrinth(root, lab);

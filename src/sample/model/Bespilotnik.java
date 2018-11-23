@@ -67,9 +67,9 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
 
         // sets center coordinates of operated bespilotnik (it always located at [0;0] position
         if(Labyrinth.getStartWall().equals("R"))
-            setCenterX(getCenterX() - ((getStep()-1)*(double)lab.getCountCells()));
+            setCenterX(getCenterX() - ((getStep()*(lab.getCountCells()-1))));
         else if(Labyrinth.getStartWall().equals("B"))
-            setCenterY(getCenterY() - ((getStep()-1)*(double)lab.getCountCells()));
+            setCenterY(getCenterY() - ((getStep()*(lab.getCountCells()-1))));
         //*************************************************************************************
 
 
@@ -230,7 +230,7 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
 
     public static double stepLineSize(double x1, double x2, double y1, double y2){
         double lineLength = Math.sqrt(Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2));
-        return lineLength/(Labyrinth.getCountCells()*2);
+        return lineLength/(Labyrinth.getCountCells()*2.0);
     }
     public static double[] startCoordinates(Labyrinth lab){
         double x = getStartLine().getStartX() + ((Labyrinth.getStartWall().equals("B") || Labyrinth.getStartWall().equals("T"))
