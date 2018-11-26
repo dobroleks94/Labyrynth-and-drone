@@ -4,6 +4,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import sample.model.Bespilotnik;
+import sample.model.Cell;
 import sample.model.Labyrinth;
 import sample.model.Sector;
 
@@ -121,53 +122,31 @@ public class Drawing {
         }
     }
 
-    public static void skyLine(Labyrinth lab,int y,int x) {
 
+    public static void skyLine(Labyrinth lab,int y,int x,int yc,int xc) {
         Sector[][] sectors = lab.getSectors();
-        visibleLine(sectors[y][x], 5);
-        if (x != 0)
-            visibleLine(sectors[y][x - 1], 2);
-        if (x != lab.getSizeX() - 1)
-            visibleLine(sectors[y][x + 1], 4);
-        if (y != 0)
-            visibleLine(sectors[y - 1][x], 3);
-        if (y != lab.getSizeY() - 1)
-            visibleLine(sectors[y + 1][x], 1);
-        if (x == lab.getFinX() && y == lab.getFinY()) {
-            drawFin(lab);
-            return;
+        if (sectors[y][x].getUpLine() != null && yc < Bespilotnik.radius) {
+            sectors[y][x].getUpLine().setStroke(Color.BLACK);
+            if (y != 0)
+                sectors[y-1][x].getDownLine().setStroke(Color.BLACK);
         }
-    }
 
-    public static void visibleLine(Sector sector,int type) {
-        switch (type) {
-            case 4:
-                if (sector.getLeftLine() != null)
-                    sector.getLeftLine().setStroke(Color.BLACK);
-                break;
-            case 2:
-                if (sector.getRightLine() != null)
-                    sector.getRightLine().setStroke(Color.BLACK);
-                break;
-            case 1:
-                if (sector.getUpLine() != null)
-                    sector.getUpLine().setStroke(Color.BLACK);
-                break;
-            case 3:
-                if (sector.getDownLine() != null)
-                    sector.getDownLine().setStroke(Color.BLACK);
-                break;
-            case 5:
-                if (sector.getLeftLine() != null)
-                    sector.getLeftLine().setStroke(Color.BLACK);
-                if (sector.getRightLine() != null)
-                    sector.getRightLine().setStroke(Color.BLACK);
-                if (sector.getUpLine() != null)
-                    sector.getUpLine().setStroke(Color.BLACK);
-                if (sector.getDownLine() != null)
-                    sector.getDownLine().setStroke(Color.BLACK);
-                break;
+        if (sectors[y][x].getRightLine() != null && Labyrinth.getCountCells()-xc<=Bespilotnik.radius) {
+            sectors[y][x].getRightLine().setStroke(Color.BLACK);
+            if (x != lab.getSizeX()-1)
+                sectors[y][x + 1].getLeftLine().setStroke(Color.BLACK);
+        }
 
+        if (sectors[y][x].getDownLine() != null && Labyrinth.getCountCells()-yc<=Bespilotnik.radius) {
+            sectors[y][x].getDownLine().setStroke(Color.BLACK);
+            if (y != lab.getSizeY()-1)
+                sectors[y+1][x].getUpLine().setStroke(Color.BLACK);
+        }
+
+        if (sectors[y][x].getLeftLine() != null && xc < Bespilotnik.radius) {
+            sectors[y][x].getLeftLine().setStroke(Color.BLACK);
+            if (x != 0)
+                sectors[y][x - 1].getRightLine().setStroke(Color.BLACK);
         }
     }
 }

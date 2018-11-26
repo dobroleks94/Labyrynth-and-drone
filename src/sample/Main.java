@@ -18,13 +18,13 @@ public class Main extends Application {
         AnchorPane root = new AnchorPane();
 
 
-        Labyrinth lab = new Labyrinth(20, 20,4);
+        Labyrinth lab = new Labyrinth(20, 20,8);
         Scene scene = new Scene(root, lab.getSizeX()*35, lab.getSizeY()*35);
         scene.setFill(null);
         Drawing.drawLabyrinth(root, lab);
 
 
-        Bespilotnik  bespilotnik = new Bespilotnik(Bespilotnik.getCentre()[0], Bespilotnik.getCentre()[1], 15.0/Labyrinth.getCountCells(), 15.0/Labyrinth.getCountCells(), lab);
+        Bespilotnik  bespilotnik = new Bespilotnik(Bespilotnik.getCentre()[0], Bespilotnik.getCentre()[1], 15.0/Labyrinth.getCountCells(), 15.0/Labyrinth.getCountCells(), lab,3);
         root.getChildren().add(bespilotnik);
 
         System.out.println(lab.getFinX() + " " + lab.getFinY());

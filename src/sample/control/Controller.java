@@ -59,7 +59,8 @@ public class Controller extends Task {
 
 
                     besp.setCurrentSector(labyrinth.getSector(besp.getY(), besp.getX())); // gets sector after moving
-                    Drawing.skyLine(labyrinth, besp.getY(), besp.getX());
+                    System.out.println(besp.getCurrentSector().isUp()+" "+besp.getCurrentSector().isRight()+" "+besp.getCurrentSector().isDown()+" "+besp.getCurrentSector().isLeft()+" ");
+                    Drawing.skyLine(labyrinth,besp.getY(), besp.getX(),besp.getCellY(),besp.getCellX());
 
                     /*for (Bespilotnik b : besp.getGroup()) {
                         if (!b.isOnFinish() && b.isCanMove()) {

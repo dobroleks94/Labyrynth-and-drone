@@ -46,14 +46,16 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
     private boolean isOnFinish;
     private boolean canMove;
     private static double step;
+    public static int radius;
 
     public GroupBespil getGroup() {
         return group;
     }
 
-    public Bespilotnik(double xCentre, double yCentre, double horizSize, double vertSize, Labyrinth lab) {
+    public Bespilotnik(double xCentre, double yCentre, double horizSize, double vertSize, Labyrinth lab,int radius) {
         super(xCentre, yCentre, horizSize, vertSize);
         setStep(horizSize*2);
+        Bespilotnik.radius=radius;
         //setMain(this);
         color = Color.BLACK;
         setLabyrinth(lab);
