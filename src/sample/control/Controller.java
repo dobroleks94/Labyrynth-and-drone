@@ -36,16 +36,11 @@ public class Controller extends Task {
 
                     labyrinth = besp.getLabyrinth();
 
-                    if (!besp.isFirstStep())
-                        besp.wait(); //waiting for allowing to move
+                    if(!besp.isAutopilot())
+                        if (!besp.isFirstStep())
+                            besp.wait(); //waiting for allowing to move
 
                     sector = besp.getLabyrinth().getSector(besp.getY(), besp.getX()); // gets sector before moving
-
-
-                    /*besp.setPreviousCentreX(besp.getCenterX());
-                    besp.setPreviousCentreY(besp.getCenterY());
-                    besp.setPreviousX(besp.getX());
-                    besp.setPreviousY(besp.getY());*/
 
                     if (!besp.isOnFinish()) {
                         doStep(besp, verticalSize, positiveDirection);
@@ -62,25 +57,16 @@ public class Controller extends Task {
                     System.out.println(besp.getCurrentSector().isUp()+" "+besp.getCurrentSector().isRight()+" "+besp.getCurrentSector().isDown()+" "+besp.getCurrentSector().isLeft()+" ");
                     Drawing.skyLine(labyrinth,besp.getY(), besp.getX(),besp.getCellY(),besp.getCellX());
 
-                    /*for (Bespilotnik b : besp.getGroup()) {
-                        if (!b.isOnFinish() && b.isCanMove()) {
-
-                            if (b.getLeadBesp().getCenterX() != b.getLeadBesp().getPreviousCentreX()
-                                    || b.getLeadBesp().getCenterY() != b.getLeadBesp().getPreviousCentreY()) {
-                                settingCenterCoordinates(b);
-                                if (b.getChild() != null)
-                                    if (!b.getChild().isCanMove())
-                                        b.getChild().setCanMove(true);
-                            }
-
-                            b.setCurrentSector(labyrinth.getSector(b.getY(), b.getX()));
-                            paintBespilotnik(b);
-                        }
-
-                    }*/
-
                     finishVerifiening(besp);
                     paintBespilotnik(besp);
+
+                    if(besp.isAutopilot())
+                        Thread.sleep(250);
+
+                    if(besp.isOnFinish())
+                        break;
+                    if(besp.isAutopilot())
+                        besp.getAutopilotBespil().moveAutopilot();
 
                 }
             }
@@ -105,13 +91,7 @@ public class Controller extends Task {
     private void finishVerifiening (Bespilotnik besp){
         if (besp.getCurrentSector() == besp.getFinish()) {
             besp.setOnFinish(true);
-            /*for (Bespilotnik bespilotnik : besp.getGroup())
-                if (!bespilotnik.isOnFinish()) {
-                    bespilotnik.setCenterX(bespilotnik.getLeadBesp().getCenterX());
-                    bespilotnik.setCenterY(bespilotnik.getLeadBesp().getCenterY());
-                    bespilotnik.setX(bespilotnik.getLeadBesp().getX());
-                    bespilotnik.setY(bespilotnik.getLeadBesp().getY());
-                }*/
+            Drawing.drawFin(besp.getLabyrinth());
         }
     }
     private void paintBespilotnik(Bespilotnik besp){
@@ -128,15 +108,15 @@ public class Controller extends Task {
             if(besp.getCellX()<0 || besp.getCellX() == labyrinth.getCountCells()) {
 
                 besp.setCellX(besp.getCellX() == labyrinth.getCountCells() ?
-                        positiveDirection && (!besp.getCurrentSector().isRight()) ?
+                        positiveDirection && (!besp.getCurrentSector().isRight()) ?  // Sets coordinates of current cell in sector
                             0 : labyrinth.getCountCells()-1 :
                                 (!besp.getCurrentSector().isLeft()) ? labyrinth.getCountCells()-1 : 0
                         );
                 besp.setX(besp.getX() + (positiveDirection ?
-                        (!besp.getCurrentSector().isRight()) ? 1 : 0 :
+                        (!besp.getCurrentSector().isRight()) ? 1 : 0 :   // Sets coordinates of current sector
                         (!besp.getCurrentSector().isLeft()) ? -1 : 0));
                 besp.setCenterX(besp.getCenterX() + (positiveDirection ?
-                        (!besp.getCurrentSector().isRight()) ? besp.getStep() : 0 :
+                        (!besp.getCurrentSector().isRight()) ? besp.getStep() : 0 :  // Sets coordinates of current location
                         (!besp.getCurrentSector().isLeft()) ? -besp.getStep() : 0));
 
                 System.out.printf("[ %d ; %d ]\n", besp.getCellX(), besp.getCellY());
@@ -171,17 +151,5 @@ public class Controller extends Task {
         System.out.printf("[ %d ; %d ]\n", besp.getCellX(), besp.getCellY());
         System.out.printf("[ %d ; %d ]\n\n", besp.getX(), besp.getY());
     }
-   /* private void settingCenterCoordinates(Bespilotnik b) {
-        b.setPreviousCentreX(b.getCenterX());
-        b.setCenterX(b.getLeadBesp().getPreviousCentreX());
 
-        b.setPreviousX(b.getX());
-        b.setX(b.getLeadBesp().getPreviousX());
-
-        b.setPreviousCentreY(b.getCenterY());
-        b.setCenterY(b.getLeadBesp().getPreviousCentreY());
-
-        b.setPreviousY(b.getY());
-        b.setY(b.getLeadBesp().getPreviousY());
-    }*/
 }

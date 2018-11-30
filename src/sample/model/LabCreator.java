@@ -38,7 +38,6 @@ public class LabCreator {
                 (lab.getStartY() == 0 && lab.getStartX() == lab.getSizeX() - 1) ||
                 (lab.getStartY() == lab.getSizeY() - 1 && lab.getStartX() == 0) ||
                 (lab.getStartY() == lab.getSizeY() - 1 && lab.getStartX() == lab.getSizeX() - 1));
-
         int x = lab.getStartX();
         int y = lab.getStartY();
         int count = 0;

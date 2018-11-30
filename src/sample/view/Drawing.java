@@ -21,22 +21,22 @@ public class Drawing {
             for (int x = 0; x < sectors[y].length; x++) {
 
                 if (sectors[y][x].isLeft()) {
-                    sectors[y][x].setLeftLine(setLine(otstup, otstup, otstup, length, x, y), 0);  //ЛЕВАЯ СТЕНКА
+                    sectors[y][x].setLeftLine(setLine(otstup, otstup, otstup, length, x, y), 3);  //ЛЕВАЯ СТЕНКА
                     lines.add(sectors[y][x].getLeftLine());
                 }
 
                 if (sectors[y][x].isRight()) {
-                    sectors[y][x].setRightLine(setLine(length, otstup, length, length, x, y), 0); //ПРАВАЯ СТЕНКА
+                    sectors[y][x].setRightLine(setLine(length, otstup, length, length, x, y), 3); //ПРАВАЯ СТЕНКА
                     lines.add(sectors[y][x].getRightLine());
                 }
 
                 if (sectors[y][x].isUp()) {
-                    sectors[y][x].setUpLine(setLine(otstup, otstup, length, otstup, x, y), 0); //ВЕРХНЯЯ СТЕНКА
+                    sectors[y][x].setUpLine(setLine(otstup, otstup, length, otstup, x, y), 3); //ВЕРХНЯЯ СТЕНКА
                     lines.add(sectors[y][x].getUpLine());
                 }
 
                 if (sectors[y][x].isDown()) {
-                    sectors[y][x].setDownLine(setLine(otstup, length, length, length, x, y), 0); //НИЖНЯЯ СТЕНКА
+                    sectors[y][x].setDownLine(setLine(otstup, length, length, length, x, y), 3); //НИЖНЯЯ СТЕНКА
                     lines.add(sectors[y][x].getDownLine());
                 }
             }
@@ -82,7 +82,7 @@ public class Drawing {
         root.getChildren().add(start);
     }
 
-    private static void drawFin(Labyrinth lab) { //ВЫДЕЛЕНИЕ ФИНИША
+    public static void drawFin(Labyrinth lab) { //ВЫДЕЛЕНИЕ ФИНИША
         if (lab.getFinX() == 0) {
             lab.getSector(lab.getFinY(), lab.getFinX()).setLeftLine(lab.getSector(lab.getFinY(), lab.getFinX()).getLeftLine(), 2); //ЛЕВАЯ СТЕНКА
             lab.setFinishWall("L");
@@ -106,7 +106,6 @@ public class Drawing {
     public static Line typeLine(Line line, int type) {
         switch (type) {
             case 0:
-
                 line.setStroke(Color.WHITE);
                 return line;
             case 1:
