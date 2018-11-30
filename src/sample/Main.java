@@ -27,7 +27,7 @@ public class Main extends Application {
         Drawing.drawLabyrinth(root, lab);
 
 
-        Bespilotnik  bespilotnik = new Bespilotnik(Bespilotnik.getCentre()[0], Bespilotnik.getCentre()[1], 15.0/Labyrinth.getCountCells(), 15.0/Labyrinth.getCountCells(), lab,radius);
+        Bespilotnik  bespilotnik = new Bespilotnik(true, Bespilotnik.getCentre()[0], Bespilotnik.getCentre()[1], 15.0/Labyrinth.getCountCells(), 15.0/Labyrinth.getCountCells(), lab,radius);
         root.getChildren().add(bespilotnik);
 
         System.out.println(lab.getFinX() + " " + lab.getFinY());
