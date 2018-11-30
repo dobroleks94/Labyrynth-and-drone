@@ -15,6 +15,7 @@ public class Main extends Application {
     private static int sizeY;
     private static int countCells;
     private static int radius;
+    private static boolean autopilot=false;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -27,7 +28,7 @@ public class Main extends Application {
         Drawing.drawLabyrinth(root, lab);
 
 
-        Bespilotnik  bespilotnik = new Bespilotnik(true, Bespilotnik.getCentre()[0], Bespilotnik.getCentre()[1], 15.0/Labyrinth.getCountCells(), 15.0/Labyrinth.getCountCells(), lab,radius);
+        Bespilotnik  bespilotnik = new Bespilotnik(autopilot, Bespilotnik.getCentre()[0], Bespilotnik.getCentre()[1], 15.0/Labyrinth.getCountCells(), 15.0/Labyrinth.getCountCells(), lab,radius);
         root.getChildren().add(bespilotnik);
 
         System.out.println(lab.getFinX() + " " + lab.getFinY());
@@ -49,7 +50,9 @@ public class Main extends Application {
         JLabel label2=new JLabel("Ширина лабіринта (>=10)= ");
         JLabel label3=new JLabel("Кількість комірок в секторі (>1)= ");
         JLabel label4=new JLabel("Радіус видимості беспілотника (>=1) = ");
+        JLabel label5=new JLabel("Автопілот");
         label4.setSize(10,100);
+        JCheckBox checkBox=new JCheckBox();
         JTextField textField1=new JTextField(5);
         JTextField textField2=new JTextField(5);
         JTextField textField3=new JTextField(5);
@@ -62,6 +65,8 @@ public class Main extends Application {
                 countCells=Integer.valueOf(textField3.getText());
                 radius=Integer.valueOf(textField4.getText());
                 if(sizeX>=10&&sizeY>=10&&countCells>1&&radius>=1){
+                    if(checkBox.isSelected())
+                        autopilot=true;
                     frame.dispose();
                     launch(args);
                 }
@@ -73,7 +78,7 @@ public class Main extends Application {
                 g.printStackTrace();
             }
         });
-        GridLayout gridLayout=new GridLayout(5,2);
+        GridLayout gridLayout=new GridLayout(6,2);
         gridLayout.setHgap(50);
         frame.setLayout(gridLayout);
         frame.add(label1);
@@ -84,6 +89,8 @@ public class Main extends Application {
         frame.add(textField3);
         frame.add(label4);
         frame.add(textField4);
+        frame.add(label5);
+        frame.add(checkBox);
         frame.add(new JLabel());
         frame.add(ok);
         frame.setVisible(true);
