@@ -4,15 +4,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import sample.model.Bespilotnik;
-import sample.model.Cell;
 import sample.model.Labyrinth;
 import sample.model.Sector;
 
 import java.util.HashSet;
 
 public class Drawing {
-    static int otstup = 30;
-    static int length = otstup * 2;
+    private static int otstup = 30;
+    private static int length = otstup * 2;
 
     public static void drawLabyrinth(AnchorPane root, Labyrinth lab) { //Отображение всех секторов лабиринта
         Sector[][] sectors = lab.getSectors();
@@ -42,7 +41,6 @@ public class Drawing {
             }
         }
         drawStart(root, lab);
-        //drawFin(lab);
         Bespilotnik.setFinish(lab.getSector(lab.getFinY(), lab.getFinX()));
         root.getChildren().addAll(lines);
     }
@@ -100,13 +98,11 @@ public class Drawing {
             lab.setFinishWall("B");
             lab.getSector(lab.getFinY(),lab.getFinX()).setDown(false);
         }
-        //Bespilotnik.setFinish(lab.getSector(lab.getFinY(), lab.getFinX()));
     }
 
     public static Line typeLine(Line line, int type) {
         switch (type) {
             case 0:
-
                 line.setStroke(Color.WHITE);
                 return line;
             case 1:
