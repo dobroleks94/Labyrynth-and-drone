@@ -14,7 +14,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="kursach" options="--add-modules=javafx.graphics,javafx.base" />
+      <module name="kursach" options="--add-modules=javafx.graphics,javafx.base,javafx.controls" />
     </option>
   </component>
 </project>

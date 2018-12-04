@@ -70,29 +70,33 @@ public class Sector {
     public Line getLeftLine() {
         return leftLine;
     }
-    public void setLeftLine(Line leftLine, int type) {
-        this.leftLine = Drawing.typeLine(leftLine, type);
+    public void setLeftLine(Line leftLine) {
+        leftLine.setOpacity(0);
+        this.leftLine = leftLine;
     }
 
     public Line getRightLine() {
         return rightLine;
     }
-    public void setRightLine(Line rightLine, int type) {
-        this.rightLine = Drawing.typeLine(rightLine, type);
+    public void setRightLine(Line rightLine) {
+        rightLine.setOpacity(0);
+        this.rightLine = rightLine;
     }
 
     public Line getUpLine() {
         return upLine;
     }
-    public void setUpLine(Line upLine, int type) {
-        this.upLine = Drawing.typeLine(upLine, type);
+    public void setUpLine(Line upLine) {
+        upLine.setOpacity(0);
+        this.upLine = upLine;
     }
 
     public Line getDownLine() {
         return downLine;
     }
-    public void setDownLine(Line downLine, int type) {
-        this.downLine = Drawing.typeLine(downLine, type);
+    public void setDownLine(Line downLine) {
+        downLine.setOpacity(0);
+        this.downLine = downLine;
     }
 
 
