@@ -20,22 +20,22 @@ public class Drawing {
             for (int x = 0; x < sectors[y].length; x++) {
 
                 if (sectors[y][x].isLeft()) {
-                    sectors[y][x].setLeftLine(setLine(otstup, otstup, otstup, length, x, y), 0);  //ЛЕВАЯ СТЕНКА
+                    sectors[y][x].setLeftLine(setLine(otstup, otstup, otstup, length, x, y));  //ЛЕВАЯ СТЕНКА
                     lines.add(sectors[y][x].getLeftLine());
                 }
 
                 if (sectors[y][x].isRight()) {
-                    sectors[y][x].setRightLine(setLine(length, otstup, length, length, x, y), 0); //ПРАВАЯ СТЕНКА
+                    sectors[y][x].setRightLine(setLine(length, otstup, length, length, x, y)); //ПРАВАЯ СТЕНКА
                     lines.add(sectors[y][x].getRightLine());
                 }
 
                 if (sectors[y][x].isUp()) {
-                    sectors[y][x].setUpLine(setLine(otstup, otstup, length, otstup, x, y), 0); //ВЕРХНЯЯ СТЕНКА
+                    sectors[y][x].setUpLine(setLine(otstup, otstup, length, otstup, x, y)); //ВЕРХНЯЯ СТЕНКА
                     lines.add(sectors[y][x].getUpLine());
                 }
 
                 if (sectors[y][x].isDown()) {
-                    sectors[y][x].setDownLine(setLine(otstup, length, length, length, x, y), 0); //НИЖНЯЯ СТЕНКА
+                    sectors[y][x].setDownLine(setLine(otstup, length, length, length, x, y)); //НИЖНЯЯ СТЕНКА
                     lines.add(sectors[y][x].getDownLine());
                 }
             }
@@ -69,6 +69,7 @@ public class Drawing {
             lab.setStartWall("B");
         }
         start.setStroke(Color.BLUE);
+        start.setOpacity(1);
         start.setStrokeWidth(4);
 
         Bespilotnik.setStartLine(start); // start line
@@ -82,39 +83,25 @@ public class Drawing {
 
     public static void drawFin(Labyrinth lab) { //ВЫДЕЛЕНИЕ ФИНИША
         if (lab.getFinX() == 0) {
-            lab.getSector(lab.getFinY(), lab.getFinX()).setLeftLine(lab.getSector(lab.getFinY(), lab.getFinX()).getLeftLine(), 2); //ЛЕВАЯ СТЕНКА
+            lab.getSector(lab.getFinY(),lab.getFinX()).getLeftLine().setStroke(Color.RED);
+            lab.getSector(lab.getFinY(),lab.getFinX()).getLeftLine().setOpacity(1);
             lab.setFinishWall("L");
             lab.getSector(lab.getFinY(),lab.getFinX()).setLeft(false);
         } else if (lab.getFinX() == lab.getSizeX() - 1) {
-            lab.getSector(lab.getFinY(), lab.getFinX()).setRightLine(lab.getSector(lab.getFinY(), lab.getFinX()).getRightLine(), 2);   //ПРАВАЯ СТЕНКА
+            lab.getSector(lab.getFinY(),lab.getFinX()).getRightLine().setStroke(Color.RED);
+            lab.getSector(lab.getFinY(),lab.getFinX()).getRightLine().setOpacity(1);
             lab.setFinishWall("R");
             lab.getSector(lab.getFinY(),lab.getFinX()).setRight(false);
         } else if (lab.getFinY() == 0) {
-            lab.getSector(lab.getFinY(), lab.getFinX()).setUpLine(lab.getSector(lab.getFinY(), lab.getFinX()).getUpLine(), 2);  //ВЕРХНЯЯ СТЕНКА
+            lab.getSector(lab.getFinY(),lab.getFinX()).getUpLine().setStroke(Color.RED);
+            lab.getSector(lab.getFinY(),lab.getFinX()).getUpLine().setOpacity(1);
             lab.setFinishWall("T");
             lab.getSector(lab.getFinY(),lab.getFinX()).setUp(false);
         } else {
-            lab.getSector(lab.getFinY(), lab.getFinX()).setDownLine(lab.getSector(lab.getFinY(), lab.getFinX()).getDownLine(), 2); //НИЖНЯЯ СТЕНКА
+            lab.getSector(lab.getFinY(),lab.getFinX()).getDownLine().setStroke(Color.RED);
+            lab.getSector(lab.getFinY(),lab.getFinX()).getDownLine().setOpacity(1);
             lab.setFinishWall("B");
             lab.getSector(lab.getFinY(),lab.getFinX()).setDown(false);
-        }
-    }
-
-    public static Line typeLine(Line line, int type) {
-        switch (type) {
-            case 0:
-                line.setStroke(Color.WHITE);
-                return line;
-            case 1:
-                line.setStroke(Color.BLUE);
-                return line;
-            case 2:
-                line.setStroke(Color.RED);
-                line.setStrokeWidth(3);
-                return line;
-            default:
-                line.setStroke(Color.BLACK);
-                return line;
         }
     }
 
@@ -122,27 +109,27 @@ public class Drawing {
     public static void skyLine(Labyrinth lab,int y,int x,int yc,int xc) {
         Sector[][] sectors = lab.getSectors();
         if (sectors[y][x].getUpLine() != null && yc < Bespilotnik.radius) {
-            sectors[y][x].getUpLine().setStroke(Color.BLACK);
+            sectors[y][x].getUpLine().setOpacity(1);
             if (y != 0)
-                sectors[y-1][x].getDownLine().setStroke(Color.BLACK);
+                sectors[y-1][x].getDownLine().setOpacity(1);
         }
 
         if (sectors[y][x].getRightLine() != null && Labyrinth.getCountCells()-xc<=Bespilotnik.radius) {
-            sectors[y][x].getRightLine().setStroke(Color.BLACK);
+            sectors[y][x].getRightLine().setOpacity(1);
             if (x != lab.getSizeX()-1)
-                sectors[y][x + 1].getLeftLine().setStroke(Color.BLACK);
+                sectors[y][x + 1].getLeftLine().setOpacity(1);
         }
 
         if (sectors[y][x].getDownLine() != null && Labyrinth.getCountCells()-yc<=Bespilotnik.radius) {
-            sectors[y][x].getDownLine().setStroke(Color.BLACK);
+            sectors[y][x].getDownLine().setOpacity(1);
             if (y != lab.getSizeY()-1)
-                sectors[y+1][x].getUpLine().setStroke(Color.BLACK);
+                sectors[y+1][x].getUpLine().setOpacity(1);
         }
 
         if (sectors[y][x].getLeftLine() != null && xc < Bespilotnik.radius) {
-            sectors[y][x].getLeftLine().setStroke(Color.BLACK);
+            sectors[y][x].getLeftLine().setOpacity(1);
             if (x != 0)
-                sectors[y][x - 1].getRightLine().setStroke(Color.BLACK);
+                sectors[y][x - 1].getRightLine().setOpacity(1);
         }
     }
 }
