@@ -16,8 +16,6 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
 
     private static int name = 1;
     private int n ;
-    private static int Xx = 0;
-    private int x ;
 
     private Paint color;
 
@@ -115,7 +113,7 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
     public Bespilotnik(Bespilotnik main, Bespilotnik bespilotnik){
 
         setLabyrinth(main.getLabyrinth());
-
+        //this.radius = Labyrinth.getCountCells();
         setLeadBesp(bespilotnik);
         setMain(main);
 

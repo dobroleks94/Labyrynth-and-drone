@@ -58,6 +58,14 @@ public class Main extends Application {
             Labyrinth lab = new Labyrinth(sizeX, sizeY,countCells);
             Drawing.drawLabyrinth(root1, lab);
             Bespilotnik  bespilotnik = new Bespilotnik(autopilot, Bespilotnik.getCentre()[0], Bespilotnik.getCentre()[1], 15.0/Labyrinth.getCountCells(), 15.0/Labyrinth.getCountCells(), lab,radius);
+//            if(!autopilot)
+//                for(int i = 0; i< (countCells * 2); i++) {
+//                    if(i == 0) {
+//                        root1.getChildren().add(new Bespilotnik(bespilotnik, bespilotnik));
+//                        continue;
+//                    }
+//                    root1.getChildren().add(new Bespilotnik(bespilotnik, bespilotnik.getChild().get(i-1)));
+//                }
             root1.getChildren().add(bespilotnik);
             Scene scene1 = new Scene(root1, lab.getSizeX()*35, lab.getSizeY()*35);
             Stage generalStage=new Stage();

@@ -7,8 +7,6 @@ import sample.model.Bespilotnik;
 import sample.model.Labyrinth;
 import sample.view.Drawing;
 
-import java.beans.beancontext.BeanContextServiceAvailableEvent;
-
 public class Controller extends Task {
     private boolean verticalSize = false;
     private boolean positiveDirection = false;
@@ -31,7 +29,7 @@ public class Controller extends Task {
         try {
             synchronized (besp) {
                 while (besp.getScene().getWindow().isShowing()) {
-                    double length = 0.0;
+                    double length;
                     labyrinth = besp.getLabyrinth();
 
                     if(!besp.isAutopilot() && besp.isOperated())

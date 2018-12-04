@@ -8,6 +8,14 @@ public class Labyrinth {
     private int finX;//Положение конечной точки
     private int finY;
     private Sector[][] sectors;
+    private Bespilotnik bespilotnik;
+
+    public void setBespilotnik(Bespilotnik bespilotnik) {
+        this.bespilotnik = bespilotnik;
+    }
+    public Bespilotnik getBespilotnik() {
+        return bespilotnik;
+    }
 
     private static String startWall;
     private static String finishWall;
