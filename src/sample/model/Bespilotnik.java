@@ -9,16 +9,22 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
 
     private static int name = 1;
     private int n ;
+    private static int Xx = 0;
+    private int x ;
 
     private Paint color;
 
     private static Sector start;
     private static Sector finish;
     private Sector currentSector;
+    private Sector previousSector;
     private static Cell startC;
     private static Cell finishC;
     private Cell currentCell;
@@ -28,32 +34,47 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
 
     private int X;
     private int Y;
+    private double verifX;
+    private double verifY;
     private int cellX;
     private int cellY;
-    double previousCentreX;
-    double previousCentreY;
-    int previousX;
-    int previousY;
 
     private boolean isOperated;
 
     private Bespilotnik main; //previous bespilotnik, which leads this one
     private Bespilotnik leadBesp; //previous bespilotnik, which leads this one
-    private Bespilotnik child; //  leadBesp follower
+    private ArrayList<Bespilotnik> child = new ArrayList<>(); //  leadBesp follower
+    public Side previous;
+    public Side previousOpposite;
+    public Side current;
     private boolean firstStep = true;
     private boolean isOnFinish;
     private boolean canMove;
     private static double step;
     public static int radius;
 
+
     private Autopilot autopilotBespil;
     public Autopilot getAutopilotBespil() {
         return autopilotBespil;
+    }
+    public void setAutopilotBespil(Autopilot autopilotBespil) {
+        this.autopilotBespil = autopilotBespil;
     }
 
     private boolean autopilot;
     public boolean isAutopilot() {
         return autopilot;
+    }
+    public void setAutopilot(boolean autopilot) {
+        this.autopilot = autopilot;
+    }
+
+    public boolean isOperated() {
+        return isOperated;
+    }
+    public void setOperated(boolean operated) {
+        isOperated = operated;
     }
 
     public Bespilotnik(boolean autopilot, double xCentre, double yCentre, double horizSize, double vertSize, Labyrinth lab, int radius) {
@@ -61,7 +82,7 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
         setStep(horizSize*2);
         Bespilotnik.radius=radius;
         this.autopilot = autopilot;
-        //setMain(this);
+        setMain(this);
         color = Color.BLACK;
         setLabyrinth(lab);
 
@@ -88,26 +109,34 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
         setCurrentCell(getCurrentSector().getCell(getCellY(), getCellX()));
 
         isOperated = true;
-        //group = new GroupBespil();
         n = name;
         name++;
     }
-    public Bespilotnik(Bespilotnik bespilotnik){
+    public Bespilotnik(Bespilotnik main, Bespilotnik bespilotnik){
+
+        setLabyrinth(main.getLabyrinth());
 
         setLeadBesp(bespilotnik);
-        setMain(getLeadBesp().getMain());
+        setMain(main);
 
-        setRadiusX(getLeadBesp().getRadiusX());
-        setRadiusY(getLeadBesp().getRadiusY());
-        setCenterX(getLeadBesp().getCenterX());
-        setCenterY(getLeadBesp().getCenterY());
-        setX(getLeadBesp().getX());
-        setY(getLeadBesp().getY());
+        setRadiusX(main.getRadiusX());
+        setRadiusY(main.getRadiusY());
+        setCenterX(main.getCenterX() + step);
+        setCenterY(main.getCenterY());
+        setX(main.getX());
+        setY(main.getY());
+        setCellX(1);
+        setCellY(0);
+        setCurrentSector(getLabyrinth().getSector(getY(), getX()));
+        setCurrentCell(getCurrentSector().getCell(getCellY(), getCellX()));
 
+        current = getRandomSide();
         isOperated = false;
         color = Color.GREEN;
+        setFill(color);
 
-        bespilotnik.setChild(this);
+
+        main.setChild(this);
 
         //getMain().getGroup().addToGroup(this);
         n = name;
@@ -115,6 +144,9 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
     }
 
     public Controller getBehave(){ return behave;}
+    public void setBehave(Controller behave) {
+        this.behave = behave;
+    }
 
     public void setLabyrinth(Labyrinth labyrinth) {
         this.labyrinth = labyrinth;
@@ -184,6 +216,18 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
     }
     public void setY(int y) {
         Y = y;
+    }
+    public double getVerifX() {
+        return verifX;
+    }
+    public void setVerifX(double verifX) {
+        this.verifX = verifX;
+    }
+    public double getVerifY() {
+        return verifY;
+    }
+    public void setVerifY(double verifY) {
+        this.verifY = verifY;
     }
     public int getCellX() {
         return cellX;
@@ -278,9 +322,9 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
     public void setLeadBesp(Bespilotnik besp) {this.leadBesp = besp;}
 
     public void setChild(Bespilotnik child) {
-        this.child = child;
+        this.child.add(child);
     }
-    public Bespilotnik getChild() {
+    public ArrayList<Bespilotnik> getChild() {
         return child;
     }
 
@@ -295,50 +339,79 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
             new Thread(behave).start();
         }
     }
-
     /**
      * Handling the pressing on directing buttons (up, down, left, right on the keyboard)
      * Firstly it is checking object on having a behaviour, than it points bespilotnik on nessesary direction
      * and notifies it to move there
      */
-    private void readEventCode(KeyEvent event){
+    private boolean notSuitable;
+    private void readEventCode(KeyEvent event) {
+        notSuitable = false;
         switch (event.getCode()) {
-            case UP: case W:
-                if(getX() == 0 && getY()<labyrinth.getSizeY())
+            case UP:
+            case W:
+                if (getX() == 0 && getY() < labyrinth.getSizeY())
                     Autopilot.clocksPointer = true;
-                else if(getX() == (labyrinth.getSizeX()-1) && getY()<labyrinth.getSizeY())
+                else if (getX() == (labyrinth.getSizeX() - 1) && getY() < labyrinth.getSizeY())
                     Autopilot.clocksPointer = false;
                 behave.moveToSide(Side.TOP);
                 Autopilot.moveUp = true;
                 break;
-            case DOWN: case S:
-                if(getX() == 0 && getY()<labyrinth.getSizeY())
+            case DOWN:
+            case S:
+                if (getX() == 0 && getY() < labyrinth.getSizeY())
                     Autopilot.clocksPointer = false;
-                else if(getX() == (labyrinth.getSizeX()-1) && getY()<labyrinth.getSizeY())
+                else if (getX() == (labyrinth.getSizeX() - 1) && getY() < labyrinth.getSizeY())
                     Autopilot.clocksPointer = true;
                 behave.moveToSide(Side.BOTTOM);
                 Autopilot.moveDown = true;
                 break;
-            case LEFT: case A:
-                if(getY() == 0 && getX()<labyrinth.getSizeX())
+            case LEFT:
+            case A:
+                if (getY() == 0 && getX() < labyrinth.getSizeX())
                     Autopilot.clocksPointer = false;
-                else if(getY() == (labyrinth.getSizeY()-1) && getX()<labyrinth.getSizeX())
+                else if (getY() == (labyrinth.getSizeY() - 1) && getX() < labyrinth.getSizeX())
                     Autopilot.clocksPointer = true;
                 behave.moveToSide(Side.LEFT);
                 Autopilot.moveLeft = true;
                 break;
-            case RIGHT: case D:
-                if(getY() == 0 && getX()<labyrinth.getSizeX())
+            case RIGHT:
+            case D:
+                if (getY() == 0 && getX() < labyrinth.getSizeX())
                     Autopilot.clocksPointer = true;
-                else if(getY() == (labyrinth.getSizeY()-1) && getX()<labyrinth.getSizeX())
+                else if (getY() == (labyrinth.getSizeY() - 1) && getX() < labyrinth.getSizeX())
                     Autopilot.clocksPointer = false;
                 behave.moveToSide(Side.RIGHT);
                 Autopilot.moveRight = true;
                 break;
             default:
+                notSuitable = true;
                 behave.moveToSide(null);
                 break;
         }
+    }
+    public Side getRandomSide(){
+        Random rand = new Random();
+        int sideNumb = rand.nextInt(4);
+        setVerifX(getX());
+        setVerifY(getY());
+        synchronized (this) {
+            switch (sideNumb) {
+                case 0:
+                    setVerifY((getCellY() == 0) ? getVerifY()-1 : getVerifY());
+                    return Side.TOP;
+                case 1:
+                    setVerifX((getCellX() == Labyrinth.getCountCells()-1) ? getVerifX()+1 : getVerifX());
+                    return Side.RIGHT;
+                case 2:
+                    setVerifY((getCellY() == Labyrinth.getCountCells()-1) ? getVerifY()+1 : getVerifY());
+                    return Side.BOTTOM;
+                case 3:
+                    setVerifX((getCellX() == 0) ? getVerifX()-1 : getVerifX());
+                    return Side.LEFT;
+            }
+        }
+        return null;
     }
     @Override
     public void handle(KeyEvent event) {
@@ -351,8 +424,13 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
         } else {
             synchronized (this) {
                 checkBehaviour();
+                for(Bespilotnik b : getChild())
+                    if(b != null)
+                        b.checkBehaviour();
                 readEventCode(event);
-                notify();
+                if(!notSuitable)
+                    notify();
+
             }
         }
     }

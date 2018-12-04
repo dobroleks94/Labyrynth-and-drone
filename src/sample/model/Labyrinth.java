@@ -10,6 +10,7 @@ public class Labyrinth {
     private Sector[][] sectors;
 
     private static String startWall;
+    private static String finishWall;
     private static int countCells;
 
     public Labyrinth(int sizeX, int sizeY, int countCellss) {
@@ -32,20 +33,16 @@ public class Labyrinth {
     static String getStartWall() {
         return startWall;
     }
-
     public void setStartWall(String startWalll) {
         startWall = startWalll;
     }
-
-    private static String finishWall;
-
     public static String getFinishWall() {
         return finishWall;
     }
-
     public void setFinishWall(String finishWalll) {
         finishWall = finishWalll;
     }
+
     public int getStartY() {
         return startY;
     }
@@ -59,19 +56,15 @@ public class Labyrinth {
     public void setStartX(int startX) {
         this.startX = startX;
     }
-
     public int getFinX() {
         return finX;
     }
-
     public void setFinX(int finX) {
         this.finX = finX;
     }
-
     public int getFinY() {
         return finY;
     }
-
     public void setFinY(int finY) {
         this.finY = finY;
     }
@@ -79,7 +72,6 @@ public class Labyrinth {
     public int getSizeX() {
         return sizeX;
     }
-
     public int getSizeY() {
         return sizeY;
     }
@@ -87,15 +79,12 @@ public class Labyrinth {
     public void addSector(Sector s, int indexY, int indexX) {
         sectors[indexY][indexX] = s;
     }
-
     public Sector getSector(int indexY, int indexX) {
         return sectors[indexY][indexX];
     }
-
     public void setSectors(Sector[][] sectors) {
         this.sectors = sectors;
     }
-
     public Sector[][] getSectors() {
         return sectors;
     }

@@ -79,7 +79,6 @@ public class Drawing {
 
         root.getChildren().add(start);
     }
-
     public static void drawFin(Labyrinth lab) { //ВЫДЕЛЕНИЕ ФИНИША
         if (lab.getFinX() == 0) {
             lab.getSector(lab.getFinY(), lab.getFinX()).setLeftLine(lab.getSector(lab.getFinY(), lab.getFinX()).getLeftLine(), 2); //ЛЕВАЯ СТЕНКА
@@ -99,7 +98,6 @@ public class Drawing {
             lab.getSector(lab.getFinY(),lab.getFinX()).setDown(false);
         }
     }
-
     public static Line typeLine(Line line, int type) {
         switch (type) {
             case 0:
@@ -117,8 +115,6 @@ public class Drawing {
                 return line;
         }
     }
-
-
     public static void skyLine(Labyrinth lab,int y,int x,int yc,int xc) {
         Sector[][] sectors = lab.getSectors();
         if (sectors[y][x].getUpLine() != null && yc < Bespilotnik.radius) {

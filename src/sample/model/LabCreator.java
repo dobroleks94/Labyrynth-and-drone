@@ -3,10 +3,12 @@ package sample.model;
 import java.util.Random;
 
 public class LabCreator {
+
     public static void addRandomSector(int indexY, int indexX, Labyrinth lab) { //Сектор с рандомными значениями стен
         Random random = new Random();
         lab.addSector(new Sector(random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean()), indexX, indexY);
     }
+
 
     public static void fillLab(Labyrinth lab) { //Заполнение лабиринта секторами
         for (int i = 0; i < lab.getSizeY(); i++) {
@@ -16,7 +18,6 @@ public class LabCreator {
             }
         }
     }
-
     public static void fillRoad(Labyrinth lab) { // "Прокладывание дороги" в лабиринте
         lab.setSectors(new Sector[lab.getSizeY()][lab.getSizeX()]);
         Random random = new Random();
@@ -113,7 +114,6 @@ public class LabCreator {
             }
         }
     }
-
     public static void fillCells(Labyrinth lab) {
         Sector[][] sectors = lab.getSectors();
         for (int y = 0; y < sectors.length; y++) {

@@ -5,12 +5,18 @@ import javafx.geometry.Side;
 import javafx.scene.paint.Color;
 import sample.model.Bespilotnik;
 import sample.model.Labyrinth;
-import sample.model.Sector;
 import sample.view.Drawing;
+
+import java.beans.beancontext.BeanContextServiceAvailableEvent;
 
 public class Controller extends Task {
     private boolean verticalSize = false;
     private boolean positiveDirection = false;
+    private static int v = 1;
+    private int n ;
+
+    public Controller(){v++;
+    n = v;}
 
     private Bespilotnik besp;
 
@@ -18,56 +24,80 @@ public class Controller extends Task {
         this.besp = besp;
     }
 
-    private Sector sector;
-    private Sector sector2;
-
-
-    private int moveRightLeft;
-    private int moveUpDown;
-
     Labyrinth labyrinth;
-
 
     @Override
     protected Object call() {
         try {
             synchronized (besp) {
                 while (besp.getScene().getWindow().isShowing()) {
-
+                    double length = 0.0;
                     labyrinth = besp.getLabyrinth();
 
-                    if(!besp.isAutopilot())
+                    if(!besp.isAutopilot() && besp.isOperated())
                         if (!besp.isFirstStep())
                             besp.wait(); //waiting for allowing to move
 
-                    sector = besp.getLabyrinth().getSector(besp.getY(), besp.getX()); // gets sector before moving
-
                     if (!besp.isOnFinish()) {
-                        doStep(besp, verticalSize, positiveDirection);
-                        if (besp.getChild() != null)
-                            if (!besp.getChild().isCanMove())
-                                besp.getChild().setCanMove(true);
+                        if(besp.isOperated()){
+                            doStep(besp, verticalSize, positiveDirection);
+                            for (Bespilotnik b : besp.getChild()) {
+                                if (b != null && !b.isCanMove())
+                                    b.setCanMove(true);
+                            }
+                        } else {
+                            setCurrent(besp);
+                            besp.getBehave().moveToSide(besp.current);
+                            length = Math.sqrt(Math.pow((besp.getVerifX() - besp.getLeadBesp().getX()),2) +
+                                    Math.pow((besp.getVerifY() - besp.getLeadBesp().getY()),2));
+                            while(length>Labyrinth.getCountCells()*2) {
+                                besp.setStroke(Color.GREEN);
+                                Thread.sleep(100);
+                                besp.setStroke(Color.YELLOW);
+                                Thread.sleep(100);
+                                besp.setStroke(Color.GREEN);
+
+                                setCurrent(besp);
+                                besp.getBehave().moveToSide(besp.current);
+                                length = Math.sqrt(Math.pow((besp.getVerifX() - besp.getLeadBesp().getX()), 2) +
+                                        Math.pow((besp.getVerifY() - besp.getLeadBesp().getY()), 2));
+                            }
+                            System.out.println(length);
+                            doStep(besp, verticalSize, positiveDirection);
+                            if(besp.getMain().isOnFinish()){
+                                besp.setAutopilot(true);
+                                besp.setOperated(true);
+                            }
+
+                        }
                     }
 
                     if (besp.isFirstStep())
                         besp.setFirstStep(false);
 
-
                     besp.setCurrentSector(labyrinth.getSector(besp.getY(), besp.getX())); // gets sector after moving
-                    System.out.println(besp.getCurrentSector().isUp()+" "+besp.getCurrentSector().isRight()+" "+besp.getCurrentSector().isDown()+" "+besp.getCurrentSector().isLeft()+" ");
                     Drawing.skyLine(labyrinth,besp.getY(), besp.getX(),besp.getCellY(),besp.getCellX());
 
                     finishVerifiening(besp);
                     paintBespilotnik(besp);
 
-                    if(besp.isAutopilot())
-                        Thread.sleep(250);
+                    if(besp.isAutopilot() || !besp.isOperated())
+                        Thread.sleep(350);
 
-                    if(besp.isOnFinish())
-                        break;
-                    if(besp.isAutopilot())
+                    if(besp.isAutopilot()) {
+                        besp.checkBehaviour();
+                        besp.setAutopilotBespil(new Autopilot(besp));
                         besp.getAutopilotBespil().moveAutopilot();
-
+                    }
+                    if(besp.isOnFinish() && besp.isOperated()) {
+                        for (Bespilotnik b : besp.getChild()) {
+                            if (b.getLeadBesp().isOnFinish()) {
+                                b.setAutopilot(true);
+                                b.setAutopilotBespil(new Autopilot(b));
+                                b.getAutopilotBespil().moveAutopilot();
+                            }
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
@@ -76,6 +106,16 @@ public class Controller extends Task {
         return null;
     }
 
+    private void setCurrent(Bespilotnik besp) {
+        besp.current = besp.getRandomSide();
+        while(besp.current == besp.previous || besp.current == besp.previousOpposite)
+            besp.current = besp.getRandomSide();
+        besp.previous = besp.current;
+        besp.previousOpposite = besp.previous == Side.LEFT ? Side.RIGHT :
+                besp.previous == Side.RIGHT ? Side.LEFT :
+                        besp.previous == Side.TOP ? Side.BOTTOM :
+                                besp.previous == Side.BOTTOM ? Side.TOP : null;
+    }
 
     /**
      *  defines if side, where Bespilotnik moves in Labyrinth, is vertical
@@ -102,9 +142,7 @@ public class Controller extends Task {
 
     private void doStep(Bespilotnik besp, boolean verticalSize, boolean positiveDirection) {
         if (verticalSize) {
-
             besp.setCellX(besp.getCellX() + (positiveDirection ? 1 : -1));
-
             if(besp.getCellX()<0 || besp.getCellX() == labyrinth.getCountCells()) {
 
                 besp.setCellX(besp.getCellX() == labyrinth.getCountCells() ?
@@ -119,8 +157,8 @@ public class Controller extends Task {
                         (!besp.getCurrentSector().isRight()) ? besp.getStep() : 0 :  // Sets coordinates of current location
                         (!besp.getCurrentSector().isLeft()) ? -besp.getStep() : 0));
 
-                System.out.printf("[ %d ; %d ]\n", besp.getCellX(), besp.getCellY());
-                System.out.printf("[ %d ; %d ]\n\n", besp.getX(), besp.getY());
+                System.out.printf("Cell - [ %d ; %d ]\n", besp.getCellX(), besp.getCellY());
+                System.out.printf("Sector - [ %d ; %d ]\n\n", besp.getX(), besp.getY());
                 return;
             }
             besp.setCenterX(besp.getCenterX() + (positiveDirection ? besp.getStep() : -besp.getStep()));
@@ -141,15 +179,21 @@ public class Controller extends Task {
                         (!besp.getCurrentSector().isDown()) ? besp.getStep() : 0 :
                         (!besp.getCurrentSector().isUp()) ? -besp.getStep() : 0));
 
-                System.out.printf("[ %d ; %d ]\n", besp.getCellX(), besp.getCellY());
-                System.out.printf("[ %d ; %d ]\n\n", besp.getX(), besp.getY());
+                System.out.printf("Cell - [ %d ; %d ]\n", besp.getCellX(), besp.getCellY());
+                System.out.printf("Sector - [ %d ; %d ]\n\n", besp.getX(), besp.getY());
                 return;
             }
             besp.setCenterY(besp.getCenterY() + (positiveDirection ? besp.getStep() : -besp.getStep()));
         }
 
-        System.out.printf("[ %d ; %d ]\n", besp.getCellX(), besp.getCellY());
-        System.out.printf("[ %d ; %d ]\n\n", besp.getX(), besp.getY());
+        System.out.printf("Cell - [ %d ; %d ]\n", besp.getCellX(), besp.getCellY());
+        System.out.printf("Sector - [ %d ; %d ]\n\n", besp.getX(), besp.getY());
     }
 
+    @Override
+    public String toString() {
+        return "Controller{" +
+                "n=" + n +
+                '}';
+    }
 }

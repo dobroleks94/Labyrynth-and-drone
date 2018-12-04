@@ -29,6 +29,15 @@ public class Main extends Application {
 
 
         Bespilotnik  bespilotnik = new Bespilotnik(autopilot, Bespilotnik.getCentre()[0], Bespilotnik.getCentre()[1], 15.0/Labyrinth.getCountCells(), 15.0/Labyrinth.getCountCells(), lab,radius);
+
+        if(!autopilot)
+            for(int i = 0; i< (countCells * 2); i++) {
+                if(i == 0) {
+                    root.getChildren().add(new Bespilotnik(bespilotnik, bespilotnik));
+                    continue;
+                }
+                root.getChildren().add(new Bespilotnik(bespilotnik, bespilotnik.getChild().get(i-1)));
+            }
         root.getChildren().add(bespilotnik);
 
         System.out.println(lab.getFinX() + " " + lab.getFinY());
