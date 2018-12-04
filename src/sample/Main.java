@@ -18,8 +18,9 @@ public class Main extends Application {
     private static boolean autopilot=false;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         primaryStage.setTitle("Course work");
+        primaryStage.setOnCloseRequest(event -> primaryStage.close());
         AnchorPane root = new AnchorPane();
 
         Labyrinth lab = new Labyrinth(sizeX, sizeY,countCells);
