@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
@@ -79,7 +80,7 @@ public class Main extends Application {
                 root1.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
             Stage generalStage = new Stage();
-            generalStage.setOnCloseRequest(event -> generalStage.close());
+            generalStage.setOnCloseRequest(event -> Platform.exit());
             generalStage.setTitle("Course work");
             generalStage.setScene(scene1);
             generalStage.initModality(Modality.WINDOW_MODAL);
@@ -108,9 +109,10 @@ public class Main extends Application {
         root.add(checkBox2, 1, 5, 1, 1);
         root.add(ok, 0, 6, 1, 1);
         Scene scene = new Scene(root, 500, 250);
-
+scene.getStylesheets().addAll("sample/view/GeneralScc.css");
         primaryStage.setTitle("Course work");
         primaryStage.setScene(scene);
+
         primaryStage.show();
     }
 
