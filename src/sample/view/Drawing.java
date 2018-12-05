@@ -12,9 +12,10 @@ import java.util.HashSet;
 public class Drawing {
     private static int otstup = 30;
     private static int length = otstup * 2;
-
-    public static void drawLabyrinth(AnchorPane root, Labyrinth lab) { //Отображение всех секторов лабиринта
+    private static boolean theme;
+    public static void drawLabyrinth(AnchorPane root, Labyrinth lab,boolean themes) { //Отображение всех секторов лабиринта
         Sector[][] sectors = lab.getSectors();
+        theme=themes;
         HashSet<Line> lines = new HashSet<>();
         for (int y = 0; y < sectors.length; y++) {
             for (int x = 0; x < sectors[y].length; x++) {
@@ -47,7 +48,10 @@ public class Drawing {
 
 
     private static Line setLine(int x1, int y1, int x2, int y2, int x, int y) {
-        return new Line(x * otstup + x1, y * otstup + y1, x * otstup + x2, y * otstup + y2);//Установка линии по заданым координатам
+        Line line = new Line(x * otstup + x1, y * otstup + y1, x * otstup + x2, y * otstup + y2);//Установка линии по заданым координатам
+        if(theme)
+            line.setStroke(Color.WHITE);
+        return line;
     }
 
     private static void drawStart(AnchorPane root, Labyrinth lab) { //ВЫДЕЛЕНИЕ СТАРТА

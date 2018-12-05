@@ -116,22 +116,22 @@ public class LabCreator {
     }
     public static void fillCells(Labyrinth lab) {
         Sector[][] sectors = lab.getSectors();
-        for (int y = 0; y < sectors.length; y++) {
-            for (int x = 0; x < sectors[y].length; x++) {
-                for (int yc = 0; yc < sectors[y][x].getCells().length; yc++) {
-                    for (int xc = 0; xc < sectors[y][x].getCells()[yc].length; xc++) {
-                        sectors[y][x].setCell(new Cell(), yc, xc);
-                        if (sectors[y][x].isUp()&&yc==0){
-                            sectors[y][x].getCells()[yc][xc].setUp(true);
+        for (Sector[] sector : sectors) {
+            for (int x = 0; x < sector.length; x++) {
+                for (int yc = 0; yc < sector[x].getCells().length; yc++) {
+                    for (int xc = 0; xc < sector[x].getCells()[yc].length; xc++) {
+                        sector[x].setCell(new Cell(), yc, xc);
+                        if (sector[x].isUp() && yc == 0) {
+                            sector[x].getCells()[yc][xc].setUp(true);
                         }
-                        if (sectors[y][x].isRight()&&xc==Labyrinth.getCountCells()-1){
-                            sectors[y][x].getCells()[yc][xc].setRight(true);
+                        if (sector[x].isRight() && xc == Labyrinth.getCountCells() - 1) {
+                            sector[x].getCells()[yc][xc].setRight(true);
                         }
-                        if (sectors[y][x].isDown()&&yc==Labyrinth.getCountCells()-1){
-                            sectors[y][x].getCells()[yc][xc].setDown(true);
+                        if (sector[x].isDown() && yc == Labyrinth.getCountCells() - 1) {
+                            sector[x].getCells()[yc][xc].setDown(true);
                         }
-                        if (sectors[y][x].isLeft()&&xc==0){
-                            sectors[y][x].getCells()[yc][xc].setLeft(true);
+                        if (sector[x].isLeft() && xc == 0) {
+                            sector[x].getCells()[yc][xc].setLeft(true);
                         }
                     }
                 }

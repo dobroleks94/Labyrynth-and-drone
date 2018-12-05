@@ -75,13 +75,16 @@ public class Bespilotnik extends Ellipse implements EventHandler<KeyEvent> {
         isOperated = operated;
     }
 
-    public Bespilotnik(boolean autopilot, double xCentre, double yCentre, double horizSize, double vertSize, Labyrinth lab, int radius) {
+    public Bespilotnik(boolean autopilot, double xCentre, double yCentre, double horizSize, double vertSize, Labyrinth lab, int radius,boolean theme) {
         super(xCentre, yCentre, horizSize, vertSize);
         setStep(horizSize*2);
         Bespilotnik.radius=radius;
         this.autopilot = autopilot;
         setMain(this);
-        color = Color.BLACK;
+        if(theme)
+            color = Color.WHITE;
+        else
+            color=Color.BLACK;
         setLabyrinth(lab);
 
         setCenterX(getCenterX() + (Labyrinth.getStartWall().equals("L") ? getStepLine() :
