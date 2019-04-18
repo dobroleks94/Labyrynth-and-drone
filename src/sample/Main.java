@@ -27,12 +27,12 @@ public class Main extends Application {
 
     @Override
     public void start(final Stage primaryStage) {
-        Label label1 = new Label("Висота лабіринта (>=10) = ");
-        Label label2 = new Label("Ширина лабіринта (>=10)= ");
-        Label label3 = new Label("Кількість комірок в секторі (>1)= ");
-        Label label4 = new Label("Радіус видимості беспілотника (>=1) = ");
-        Label label5 = new Label("Автопілот");
-        Label label6 = new Label("Нічний режим");
+        Label label1 = new Label("Labyrynth`s high (>=10) = ");
+        Label label2 = new Label("Labyrynth`s width (>=10)= ");
+        Label label3 = new Label("Subsectors in one sector count (>1)= ");
+        Label label4 = new Label("Overlook radius (>=1) = ");
+        Label label5 = new Label("Autopilot");
+        Label label6 = new Label("Night mode");
         CheckBox checkBox = new CheckBox();
         CheckBox checkBox2 = new CheckBox();
         TextField textField1 = new TextField();
@@ -50,11 +50,11 @@ public class Main extends Application {
                 autopilot = checkBox.isSelected();
                 nightTheme = checkBox2.isSelected();
                 if (sizeX < 10 || sizeY < 10 || countCells <= 1 || radius < 1) {
-                    System.out.println("Перевірте правильність введених даних");
+                    System.out.println("Review your input data!");
                     return;
                 }
             } catch (Exception g) {
-                System.out.println("Перевірте правильність введених даних");
+                System.out.println("Review your input data!");
                 g.printStackTrace();
                 return;
             }
